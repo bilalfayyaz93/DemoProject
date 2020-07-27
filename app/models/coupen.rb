@@ -1,0 +1,2 @@
+class Coupen < ApplicationRecord
+end
