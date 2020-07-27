@@ -30,9 +30,10 @@
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
+
   <div class="field">
-    <%= f.label "profile picture"%>
-    <%= f.file_field :display_picture%>
+    <%= f.label :avator %>
+    <%= f.file_field :avator %>
   </div>
 
   <div class="actions">
