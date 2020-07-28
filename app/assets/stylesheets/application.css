@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+ .avator {
+   border-radius: 50%;
+ }

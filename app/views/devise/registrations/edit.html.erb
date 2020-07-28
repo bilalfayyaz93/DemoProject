@@ -3,6 +3,18 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
+  <%if current_user.avator.attached?%>
+    <%= image_tag(current_user.avator,height: 100, width: 100, class: 'avator' )%>
+    <%= f.label :remove_avator%>
+    <%= f.check_box :remove_avator%><br>
+  <%end%>
+  <br>
+  <div class="field">
+    <%= f.label :avator %>
+    <%= f.file_field :avator %>
+  </div>
+  <br>
+
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -31,10 +43,8 @@
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
-  <div class="field">
-    <%= f.label :avator %>
-    <%= f.file_field :avator %>
-  </div>
+
+
 
   <div class="actions">
     <%= f.submit "Update" %>
