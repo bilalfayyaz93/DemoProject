@@ -4,7 +4,7 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%if current_user.avator.attached?%>
-    <%= image_tag current_user.avator,height: 100, width: 100, class: 'avator' %>
+    <%= image_tag current_user.avator,height: 100, width: 100, class: 'rounded-circle' %>
     <%= f.label :remove_avator%>
     <%= f.check_box :remove_avator%><br>
   <%end%>
