@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [ :edit, :update, :destroy]
 
   # GET /products
   # GET /products.json
@@ -10,9 +10,7 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
-    @name= User.joins(:Product).where("id= 1").name
-    Product.joins(:user).select('products.id, users.email as email').wh
-ere('products.id = 2').first.email
+    @product = Product.find(params[:id])
   end
 
   # GET /products/new
