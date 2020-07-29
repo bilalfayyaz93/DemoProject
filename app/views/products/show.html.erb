@@ -1,0 +1,46 @@
+<div class="container">
+<p>
+  <strong>User:</strong>
+  <%= Product.joins(:user).select('products.id, users.name as name').where("products.id = #{params[:id]}").first.name %>
+</p>
+</div>
+
+<div class="container">
+
+<p>
+  <strong>Title:</strong>
+  <%= @product.title %>
+</p>
+</div>
+
+<div class="container">
+<p>
+  <strong>Description:</strong>
+  <%= @product.description %>
+</p>
+</div>
+
+<div class="container">
+<p>
+  <strong>Quantity:</strong>
+  <%= @product.quantity %>
+</p>
+</div>
+<%flag = current_user.products.exists?(@product.id)%>
+<div class="container">
+    <%@product.photos.each do |photo|%>
+      <%= image_tag(photo.variant(resize: '300x300').processed, class: 'img-thumbnail' )%>
+      <%if flag %>
+      <%= link_to 'Remove', delete_image_product_path({img_id: photo.id}),
+                method: :delete,
+                data: { confirm: 'Are you sure?' } %>
+      <%end%>
+    <%end%>
+</div>
+<br>
+<%if flag %>
+<div class="container">
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%end%>
+<%= link_to 'Back', products_path %>
+</div>
