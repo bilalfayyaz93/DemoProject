@@ -1,10 +1,10 @@
 
 <h1>Products</h1>
-
+<%=render 'header/navbar' %>
 <table class="table">
   <thead>
     <tr>
-      <th>User</th>
+      <th>Supplier</th>
       <th>Title</th>
       <th>Description</th>
       <th>Quantity</th>
@@ -20,7 +20,7 @@
         <td><%= product.description %></td>
         <td><%= product.quantity %></td>
         <td><%= link_to 'Show', product %></td>
-        <%if current_user and current_user.products.exists?(product.id)%>
+        <%if current_user && current_user.products.exists?(product.id)%>
           <td><%= link_to 'Edit', edit_product_path(product) %></td>
           <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <%end%>
@@ -28,7 +28,9 @@
     <% end %>
   </tbody>
 </table>
-
 <br>
-
-<%= link_to 'Upload A Post', new_product_path %>
+<%if current_user%>
+  <%= link_to 'Upload A Post', new_product_path %>
+<%else%>
+  <h3><%=link_to :'login here to create post', new_user_session_path %></h3>
+<%end%>
