@@ -19,7 +19,12 @@
   <%= @product.description %>
 </p>
 </div>
-
+<div class="container">
+<p>
+  <strong>Price:</strong>
+  <%= @product.price.to_s %>
+</p>
+</div>
 <div class="container">
 <p>
   <strong>Quantity:</strong>
@@ -42,7 +47,7 @@
 <div class="container">
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%end%>
-<%= link_to 'Back', products_path %>
+<%= link_to 'Back', request.referer %>
 </div>
 <h3 class="comments_title">
   <%= @comments.count %> Comments

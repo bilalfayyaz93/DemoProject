@@ -1,0 +1,34 @@
+<h1>Cart</h1>
+<%=render 'header/navbar' %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Supplier</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Discount %</th>
+      <th>Net Price</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%@line_items.each do |product| %>
+      <tr>
+        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.product_id}").first.name %></td>
+        <%prod=Product.where(id: product.product_id).first%>
+        <td><%= prod.title %></td>
+        <td><%= prod.description %></td>
+
+        <td><input type="number" id="quantity" name="quantity" value= <%= product.quantity %> min=0 max= <%= product.quantity %> ></td>
+        <td>0</td>
+        <td><%= product.total_price %></td>
+        <td><%= button_to 'Show', prod, class: 'btn', method: :get %></td>
+        <td><%= link_to 'remove From Cart', delete_from_cart_product_path(prod, quantity: product.quantity), method: :put %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+

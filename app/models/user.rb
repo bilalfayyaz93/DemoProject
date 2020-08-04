@@ -9,11 +9,12 @@ class User < ApplicationRecord
   def purge_avator
     self.avator.purge_later
   end
+
+
+
   has_one_attached :avator
   has_many :comments
   has_many :orders
   has_many :products
   has_one :cart
-
-
 end

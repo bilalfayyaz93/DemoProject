@@ -1,0 +1,20 @@
+{
+  "emmet.showSuggestionsAsSnippets": true,
+  "editor.snippetSuggestions": "top",
+  //"emmet.includeLanguages": {
+  //"*.html.erb": "html", "erb": "html"}
+  //,"files.associations": {
+      // extension name : html
+  //   "*.html.erb": "html",
+  //},
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "files.trimTrailingWhitespace": true,
+  "window.zoomLevel": 0,
+  "files.insertFinalNewline": true,
+  "workbench.startupEditor": "welcomePage",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.codeActionsOnSave": null,
+  "editor.tokenColorCustomizations": null
+}
