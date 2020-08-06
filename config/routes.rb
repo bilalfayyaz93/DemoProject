@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root 'products#index'
   devise_for :users do
   end
+  resources :charges
   resources :comments
   resources :products do
     member do
