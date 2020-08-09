@@ -15,28 +15,41 @@
   </thead>
 
   <tbody>
+    <%cart= Cart.find(session[:cart_id].to_i)%>
     <% @products.each do |product| %>
-      <tr>
-        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.id}").first.name %></td>
-        <td><%= product.title %></td>
-        <td><%= product.description %></td>
-        <td><%= product.quantity %></td>
-        <td><%= product.price.to_s %></td>
-        <td><%= link_to 'Show', product %></td>
+      <%if cart.line_items.exists?(product_id: product.id)%>
+        <%quant=product.quantity- cart.line_items.where("product_id= #{product.id}").first.quantity %>
+      <%else%>
+        <%quant=product.quantity %>
+      <%end%>
+      <%if !quant.zero?%>
+        <tr>
+          <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.id}").first.name %></td>
+          <td><%= product.title %></td>
+          <td><%= product.description %></td>
+          <td><%= product.price.to_s %></td>
+          <td><%= link_to 'Show', product %></td>
+          <%if current_user && current_user.products.exists?(product.id)%>
+            <td><%= link_to 'Edit', edit_product_path(product) %></td>
+            <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <%else%>
+              <td>
+              <%=form_for cart.line_items.new do |form|%>
+              <%=form.hidden_field :product_id, value: product.id%>
 
-        <%if current_user && current_user.products.exists?(product.id)%>
-          <td><%= link_to 'Edit', edit_product_path(product) %></td>
-          <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <%else%>
-            <td><%= link_to 'Add To Cart', add_to_cart_product_path(product), method: :put %></td>
-        <%end%>
-      </tr>
+              <%=form.number_field :quantity, value: 1, min: 1, max: quant%>
+              <%=form.submit "add cart"%>
+              <%end%>
+          <%end%>
+        </tr>
+      <%end%>
+
     <% end %>
   </tbody>
 </table>
 <br>
 <%if current_user%>
-  <%= link_to 'Upload A Product', new_product_path %>
+  <%= link_to 'Upload A Product', new_product_path, remote: true %>
 <%else%>
   <h3><%=link_to :'login here to create post', new_user_session_path %></h3>
 <%end%>

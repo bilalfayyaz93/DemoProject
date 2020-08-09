@@ -21,11 +21,11 @@
   </div>
   <div class="field">
     <%= form.label :price %>
-    <%= form.number_field :price, step: :any %>
+    <%= form.number_field :price, min: 0 ,step: :any %>
   </div>
   <div class="field">
     <%= form.label :quantity %>
-    <%= form.number_field :quantity, min: 0%>
+    <%= form.number_field :quantity, min: 1%>
   </div>
   <div class="field">
     <%= form.label :photos %>

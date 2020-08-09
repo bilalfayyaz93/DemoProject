@@ -1,0 +1,7 @@
+$('.delete').bind('ajax:success',function()
+{
+  $(this).closest('div').parent().parent().fadeOut();
+}
+);
+var count=parseInt($('#comments_count').text())-1;
+$('#comments_count').text(count+' Comments');

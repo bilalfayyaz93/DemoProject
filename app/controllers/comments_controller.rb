@@ -1,27 +1,31 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:destroy]
-
+  helper_method :get_count
   def create
     @product = Product.find(params[:product_id])
-    @comment = @product.comments.new(comment_params)
+    @comment = @product.comments.build(comment_params)
     @comment.user = current_user
 
     respond_to do |format|
       if @comment.save
+        @count=@product.comments.count
+        format.js
         format.html { redirect_to @product, notice: 'Comment was successfully created.' }
-        format.json { render json: @comment, status: :created, location: @comment }
       else
         format.html { render action: "new" }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
   end
+  def get_count
 
+  end
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
     @comment.destroy
+
     respond_to do |format|
+      format.js
       format.html { redirect_to request.referer, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
     end

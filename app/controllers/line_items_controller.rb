@@ -1,20 +1,20 @@
 class LineItemsController < ApplicationController
-  before_action :set_line_item, only: [  :destroy]
+  before_action :set_cart
+  before_action :set_line_item, only: [ :update, :destroy]
 
   def create
-    @product = Product.find(params[:product_id])
-    @cart = Cart.where(user_id: current_user.id).first
-    @line_item=@cart.line_items.new
-    @line_item.product_id = @product.id
+    @line_item=@cart.line_items.build(line_item_params)
+    item=@cart.line_items.where("product_id == #{@line_item.product_id}").first
 
+    if item
+      item.quantity += @line_item.quantity
+      item.save
+      @line_item.destroy
+    else
+      @line_item.save
+    end
     respond_to do |format|
-      if @line_item.save
-        format.html { redirect_to responce.referer, notice: 'line_item was successfully created.' }
-        format.json { render json: @line_item, status: :created, location: @line_item }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @line_item.errors, status: :unprocessable_entity }
-      end
+        format.html { redirect_to request.referer, notice: 'line_item was successfully created.' }
     end
   end
 
@@ -24,14 +24,23 @@ class LineItemsController < ApplicationController
     @line_item.destroy
     respond_to do |format|
       format.html { redirect_to request.referer, notice: 'line_item was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
+  def update
+    @line_item.update(line_item_params)
+    respond_to do |format|
+      format.html { redirect_to cart_path, notice: 'line_item was successfully updated.' }
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_line_item
-      @line_item = LineItem.find(params[:id])
+      @line_item = @cart.line_items.find(params[:id])
+    end
+
+    def set_cart
+      @cart= Cart.find(session[:cart_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
