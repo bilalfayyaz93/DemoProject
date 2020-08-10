@@ -1,19 +1,31 @@
-<p id="notice"><%= notice %></p>
+<%=render 'header/navbar' %>
+<h1>Order</h1>
 
-<p>
-  <strong>User:</strong>
-  <%= User.where(id: @order.user_id).first %>
-</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Supplier</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Discount %</th>
+      <th>Net Price</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
 
-<p>
-  <strong>Coupen:</strong>
-  <%= @order.coupen_id %>
-</p>
+  <tbody>
+    <%@order_items.each do |product| %>
+      <tr>
+        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.product_id}").first.name %></td>
+        <%prod=Product.where(id: product.product_id).first%>
+        <td><%= prod.title %></td>
+        <td><%= prod.description %></td>
 
-<p>
-  <strong>Checkout date:</strong>
-  <%= @order.created_at %>
-</p>
-
-<%= link_to 'Edit', edit_order_path(@order) %> |
-<%= link_to 'Back', orders_path %>
+        <td><%=product.quantity%></td>
+        <td>0</td>
+        <td><%= product.total_price %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

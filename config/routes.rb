@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'home/index'
+  resources :carts
   get 'cart', to: 'carts#index'
   get 'receipt', to: 'receipts#index'
   root 'products#index'

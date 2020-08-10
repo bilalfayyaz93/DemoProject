@@ -7,32 +7,42 @@
       <th>Title</th>
       <th>Description</th>
       <th>Quantity</th>
-      <th>Discount %</th>
       <th>Net Price</th>
       <th colspan="4"></th>
     </tr>
   </thead>
   <tbody>
-    <%@line_items.each do | product| %>
-      <tr>
-        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.product_id}").first.name %></td>
-        <%prod=Product.where(id: product.product_id).first%>
-        <td><%= prod.title %></td>
-        <td><%= prod.description %></td>
-        <td>0</td>
-        <%=form_for product do |f|%>
-          <td><%=f.number_field :quantity , min: 1%></td>
-          <td><%= product.total_price %></td>
-          <td><%=f.submit 'update cart'%></td>
+    <%@line_items.each do | line_item| %>
+      <%prod=Product.where(id: line_item.product_id).first%>
+      <%if prod%>
+        <%if prod.quantity < line_item.quantity%>
+          <%line_item.quantity=prod.quantity%>
+          <%line_item.save%>
         <%end%>
-        <td><%= button_to 'Show', prod, class: 'btn', method: :get %></td>
-        <td><%= button_to 'remove From Cart', line_item_path(product) ,class: 'btn',method: :delete %></td>
-      </tr>
+        <tr >
+          <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{line_item.product_id}").first.name %></td>
+          <td><%= prod.title %></td>
+          <td><%= prod.description %></td>
+          <%=form_for line_item do |f|%>
+            <td><%=f.number_field :quantity , min: 1,max: line_item.quantity %></td>
+            <td><%= line_item.total_price %></td>
+            <td><%=f.submit 'update cart', class: "btn"%></td>
+          <%end%>
+          <td><%= button_to 'Show', prod, class: 'btn', method: :get %></td>
+          <td><%= button_to 'remove From Cart', line_item_path(line_item) ,class: 'btn',method: :delete %></td>
+        </tr>
+      <%else%>
+        <%line_item.destroy%>
+      <%end%>
     <% end %>
   </tbody>
 </table>
 
 <h2>Total Price: <%=@cart.total_price%></h2>
-<%= button_to 'Checkout', receipt_path, method: :get %>
+<%if current_user%>
+  <%= button_to 'Checkout', receipt_path, method: :get %>
+<%else%>
+  <%=button_to 'login to checkout', new_user_session_path %>
+<%end%>
 
 

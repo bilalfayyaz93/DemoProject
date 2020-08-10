@@ -8,7 +8,6 @@
       <th>Supplier</th>
       <th>Title</th>
       <th>Description</th>
-      <th>Quantity</th>
       <th>Price</th>
       <th colspan="4"></th>
     </tr>
@@ -38,7 +37,7 @@
               <%=form.hidden_field :product_id, value: product.id%>
 
               <%=form.number_field :quantity, value: 1, min: 1, max: quant%>
-              <%=form.submit "add cart"%>
+              <%=form.submit "Add to cart",class: "btn"%>
               <%end%>
           <%end%>
         </tr>
