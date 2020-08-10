@@ -49,7 +49,9 @@ class ApplicationController < ActionController::Base
             line_item_in_user_cart.quantity += item.quantity
             line_item_in_user_cart.save
           else
-            @cart.line_items.create(quantity: item.quantity, product_id: item.product_id)
+            if Product.find(item.product_id).user_id != current_user.id
+              @cart.line_items.create(quantity: item.quantity, product_id: item.product_id)
+            end
           end
         end
       else
