@@ -9,28 +9,30 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @sold_items=@order.sold_items.all
   end
 
   # GET /orders/new
   def new
-    @order = Order.new
-  end
-
-  # POST /orders
-  # POST /orders.json
-  def create
-    @order = Order.new(order_params)
-
-    respond_to do |format|
-      if @order.save
-         redirect_to @order, notice: 'Order was successfully created.'
-      else
-         render :new
-      end
+    @order = current_user.orders.new
+    @cart=Cart.find(session[:cart_id])
+    @order.coupen_id=@cart.coupen_id
+    @line_items=@cart.line_items.all
+    @order.save
+    @line_items.each do |item|
+      @order.sold_products.create(product_id: item.product_id, quantity: item.quantity)
+      update_product(item.product_id, item.quantity)
     end
+    @cart.line_items.destroy_all
+    if(@cart.coupen_id)
+      Coupen.find(@cart.coupen_id).destroy
+      @cart.coupen_id=nil
+      @cart.save
+    end
+    redirect_to root_path
   end
+
   # DELETE /orders/1
-  # DELETE /orders/1.json
   def destroy
     @order.destroy
     respond_to do |format|
@@ -47,5 +49,15 @@ class OrdersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def order_params
       params.require(:order).permit(:user_id, :coupen_id, :checkout_date)
+    end
+
+    def update_product(prod_id, quantity)
+      prod=Product.find(prod_id)
+      prod.quantity -= quantity
+      if prod.quantity.zero?
+        prod.destroy
+      else
+        prod.save
+      end
     end
 end

@@ -30,7 +30,7 @@ class LineItemsController < ApplicationController
   def update
     @line_item.update(line_item_params)
     respond_to do |format|
-      format.html { redirect_to cart_path, notice: 'line_item was successfully updated.' }
+      format.html { redirect_to request.referer, notice: 'line_item was successfully updated.' }
     end
   end
   private

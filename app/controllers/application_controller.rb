@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
         @cart=Cart.create(user_id: current_user.id)
         current_user.cart=@cart
       end
+      session[:is_user_cart_set]=true
       session[:cart_id]=@cart.id
     end
   end
@@ -38,10 +39,10 @@ class ApplicationController < ActionController::Base
       session[:is_user_cart_set]=true
       session_cart= Cart.find(session[:cart_id])
       @cart = Cart.where(user_id: current_user.id).first
-      if(session_cart.id == @cart.id)
-        return
-      end
       if(@cart)
+        if(session_cart.id == @cart.id)
+          return
+        end
         session[:cart_id]=@cart.id
         session_cart.line_items.each do |item|
           line_item_in_user_cart=@cart.line_items.find_by(product_id: item.product_id)
