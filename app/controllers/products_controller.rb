@@ -1,9 +1,11 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [ :edit, :update, :destroy]
+
   # GET /products
   # GET /products.json
   def index
     @products = Product.all
+    Rails.logger.info "Check out this info!"
   end
 
   # GET /products/1
@@ -26,7 +28,7 @@ class ProductsController < ApplicationController
   # POST /products.json
   def create
     @product = current_user.products.build(product_params)
-
+    #Rails.logger.info("hello from controller")
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
@@ -52,39 +54,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def add_to_cart
-    cart=Cart.find(session[:cart_id])
-    if current_user
-      product=Product.where("user_id != #{current_user.id} and id == #{params[:id]}").first
-    else
-      product=Product.where("id == #{params[:id]}").first
-    end
-    if product
-     line_item=cart.line_items.where("product_id == #{params[:id]}").first
-     if line_item
-       line_item.quantity += 1
-     else
-       line_item = cart.line_items.new
-       line_item.product_id=product.id
-       line_item.quantity=1
-     end
-     line_item.save
-    end
-    redirect_back(fallback_location: request.referer)
-  end
 
-  def delete_from_cart
-    cart=Cart.find(session[:cart_id])
-    line_item=cart.line_items.where("product_id = #{params[:id]}").first
-    quantity=params[:quantity].to_i
-    if line_item.quantity > quantity
-      line_item.quantity -=quantity
-      line_item.save
-    else
-      line_item.delete
-    end
-    redirect_back(fallback_location: request.referer)
-  end
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy

@@ -37,19 +37,19 @@ class ApplicationController < ActionController::Base
     if current_user
       session[:is_user_cart_set]=true
       session_cart= Cart.find(session[:cart_id])
-      cart = Cart.where(user_id: current_user.id).first
-      if(session_cart.id == cart.id)
+      @cart = Cart.where(user_id: current_user.id).first
+      if(session_cart.id == @cart.id)
         return
       end
-      if(cart)
-        session[:cart_id]=cart.id
+      if(@cart)
+        session[:cart_id]=@cart.id
         session_cart.line_items.each do |item|
-          line_item_in_user_cart=cart.line_items.find_by(product_id: item.product_id)
+          line_item_in_user_cart=@cart.line_items.find_by(product_id: item.product_id)
           if line_item_in_user_cart
             line_item_in_user_cart.quantity += item.quantity
             line_item_in_user_cart.save
           else
-            cart.line_items.create(quantity: item.quantity, product_id: item.product_id)
+            @cart.line_items.create(quantity: item.quantity, product_id: item.product_id)
           end
         end
       else

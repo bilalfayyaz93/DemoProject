@@ -1,5 +1,6 @@
 <%=render 'header/navbar' %>
-<h1>Cart</h1>
+<h1>Reciept</h1>
+
 <table class="table">
   <thead>
     <tr>
@@ -12,27 +13,24 @@
       <th colspan="4"></th>
     </tr>
   </thead>
+
   <tbody>
-    <%@line_items.each do | product| %>
+    <%@line_items.each do |product| %>
       <tr>
         <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.product_id}").first.name %></td>
         <%prod=Product.where(id: product.product_id).first%>
         <td><%= prod.title %></td>
         <td><%= prod.description %></td>
+
+        <td><%=product.quantity%></td>
         <td>0</td>
-        <%=form_for product do |f|%>
-          <td><%=f.number_field :quantity , min: 1%></td>
-          <td><%= product.total_price %></td>
-          <td><%=f.submit 'update cart'%></td>
-        <%end%>
-        <td><%= button_to 'Show', prod, class: 'btn', method: :get %></td>
-        <td><%= button_to 'remove From Cart', line_item_path(product) ,class: 'btn',method: :delete %></td>
+        <td><%= product.total_price %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
 <h2>Total Price: <%=@cart.total_price%></h2>
-<%= button_to 'Checkout', receipt_path, method: :get %>
+<%session[:total_price]=@cart.total_price%>
+<%= button_to 'Confirm', new_charge_path, method: :get %>
 
 

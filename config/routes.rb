@@ -1,16 +1,17 @@
 Rails.application.routes.draw do
   get 'home/index'
   get 'cart', to: 'carts#index'
+  get 'receipt', to: 'receipts#index'
   root 'products#index'
   devise_for :users do
   end
   resources :charges
+  resources :orders do
+  end
   resources :comments
   resources :products do
     member do
       delete :delete_image
-      put :add_to_cart
-      put :delete_from_cart
     end
     resources :comments
   end
