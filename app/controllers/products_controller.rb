@@ -31,11 +31,9 @@ class ProductsController < ApplicationController
     #Rails.logger.info("hello from controller")
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product, notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
+        format.html { redirect_to root_path, notice: 'Product was successfully created.' }
       else
         format.html { render :new }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
   end
