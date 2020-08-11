@@ -4,7 +4,6 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Supplier</th>
       <th>Title</th>
       <th>Description</th>
       <th>Quantity</th>
@@ -17,7 +16,6 @@
   <tbody>
     <%@order_items.each do |product| %>
       <tr>
-        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.product_id}").first.name %></td>
         <%prod=Product.where(id: product.product_id).first%>
         <td><%= prod.title %></td>
         <td><%= prod.description %></td>

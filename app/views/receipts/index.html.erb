@@ -29,26 +29,21 @@
 </table>
 <%price=@cart.total_price%>
 <h2>Total Price: <%=price%>$</h2>
-<%if @cart.coupen_id%>
-  <% coupen=Coupen.find_by(id: @cart.coupen_id)%>
-  <%if coupen%>
-    <h2>Discount <%=coupen.discount%>%</h2>
-    <h2>Net Price: <%=@cart.discount_price(price)%>$</h2>
-    <%session[:total_price]=@cart.discount_price(price)%>
-  <%else%>
-    <h2>Discount 0%</h2>
-    <h2>Net Price: <%=@cart.total_price%>$</h2>
-    <%session[:total_price]=@cart.total_price%>
-  <%end%>
+<% coupen=Coupen.find_by(id: @cart.coupen_id)%>
+<%if coupen%>
+  <h2>Discount <%=coupen.discount%>%</h2>
+  <h2>Net Price: <%=@cart.discount_price(price)%>$</h2>
+  <%session[:total_price]=@cart.discount_price(price)%>
+<%else%>
+  <h2>Discount 0%</h2>
+  <h2>Net Price: <%=@cart.total_price%>$</h2>
+  <%session[:total_price]=@cart.total_price%>
 <%end%>
 
-<%if !@cart.coupen_id%>
-  <%=form_for @cart do |f|%>
-    <%=f.label "Have a coupen?"%>
-
-    <%=f.number_field :coupen_id%>
-    <%=f.submit "Add coupen"%>
-  <%end%>
+<%=form_for @cart do |f|%>
+  <%=f.label "Have a coupen?"%>
+  <%=f.number_field :coupen_id%>
+  <%=f.submit "Add coupen"%>
 <%end%>
 <%= button_to 'Confirm', new_charge_path, method: :get %>
 
