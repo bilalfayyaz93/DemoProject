@@ -12,10 +12,10 @@
             <li><%=link_to :Log_out, destroy_user_session_path, method: :delete ,class: "glyphicon glyphicon-log-out" %> </li>
 
             <%else%>
-            <li><%=link_to :Log_in, new_user_session_path, class: "glyphicon glyphicon-user" %> </li>
+            <li><%=link_to :Log_in, new_user_session_path, class: "fas fa-user-circle" %> </li>
             <li><%=link_to :sign_up, new_user_registration_path, class: "glyphicon glyphicon-log-in" %> </li>
             <%end%>
-            <li><%=link_to "", carts_path, class: "btn btn-info btn-lg glyphicon glyphicon-shopping-cart" %> </li>
+            <li><%=link_to "my cart", carts_path, class: "btn btn-info btn-lg glyphicon glyphicon-shopping-cart" %> </li>
           </ul>
     </div>
   </nav>
