@@ -7,6 +7,7 @@ gem 'activestorage'
 gem 'mini_magick', '~> 4.5', '>= 4.5.1'
 gem 'simple_form'
 gem 'record_tag_helper'
+gem 'mysql2', '>= 0.4.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
 # Use sqlite3 as the database for Active Record
