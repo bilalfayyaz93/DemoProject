@@ -1,24 +1,21 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_order, only: [:show, :destroy]
+  before_action :set_attr, only: [:new]
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = current_user.orders.all
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
-    @sold_items=@order.sold_items.all
+    @order_items=@order.sold_products.all
   end
 
   # GET /orders/new
   def new
-    @order = current_user.orders.new
-    @cart=Cart.find(session[:cart_id])
-    @order.coupen_id=@cart.coupen_id
-    @line_items=@cart.line_items.all
-    @order.save
     @line_items.each do |item|
       @order.sold_products.create(product_id: item.product_id, quantity: item.quantity)
       update_product(item.product_id, item.quantity)
@@ -51,6 +48,14 @@ class OrdersController < ApplicationController
       params.require(:order).permit(:user_id, :coupen_id, :checkout_date)
     end
 
+    def set_attr
+      @order = current_user.orders.new
+      @cart=Cart.find(session[:cart_id])
+      @order.coupen_id=@cart.coupen_id
+      @line_items=@cart.line_items.all
+      @order.save
+    end
+
     def update_product(prod_id, quantity)
       prod=Product.find(prod_id)
       prod.quantity -= quantity
@@ -60,4 +65,5 @@ class OrdersController < ApplicationController
         prod.save
       end
     end
+
 end

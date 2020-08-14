@@ -14,7 +14,6 @@
   <tbody>
     <%@line_items.each do | line_item| %>
       <%prod=Product.where(id: line_item.product_id).first%>
-      <%if prod%>
         <%if prod.quantity < line_item.quantity%>
           <%line_item.quantity=prod.quantity%>
           <%line_item.save%>
@@ -31,10 +30,7 @@
           <td><%= button_to 'Show', prod, class: 'btn', method: :get %></td>
           <td><%= button_to 'remove From Cart', line_item_path(line_item) ,class: 'btn',method: :delete %></td>
         </tr>
-      <%else%>
-        <%line_item.destroy%>
       <%end%>
-    <% end %>
   </tbody>
 </table>
 

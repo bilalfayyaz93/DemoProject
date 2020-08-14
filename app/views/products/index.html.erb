@@ -48,7 +48,7 @@
 </table>
 <br>
 <%if current_user%>
-  <%= link_to 'Upload A Product', new_product_path, remote: true %>
+  <%= link_to 'Upload A Product', new_product_path %>
 <%else%>
   <h3><%=link_to :'login here to create post', new_user_session_path %></h3>
 <%end%>
