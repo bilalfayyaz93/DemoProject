@@ -1,13 +1,14 @@
-
 <h1>Products</h1>
 
 <%=render 'header/navbar' %>
+
 <table class="table">
   <thead>
     <tr>
       <th>Supplier</th>
       <th>Title</th>
       <th>Description</th>
+      <th>photo</th>
       <th>Price</th>
       <th colspan="4"></th>
     </tr>
@@ -26,18 +27,22 @@
           <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.id}").first.name %></td>
           <td><%= product.title %></td>
           <td><%= product.description %></td>
+          <%if product.photos.first%>
+          <td><%= image_tag(product.photos.first, height: 50, class: 'img' )%></td>
+          <%else%>
+          <td><img src='default.jpg' class= 'img'></td>
+          <%end%>
           <td><%= product.price.to_s %></td>
-          <td><%= link_to 'Show', product %></td>
+          <td><%= link_to 'Show', product,class: "btn btn-primary btn-sm" %></td>
           <%if current_user && current_user.products.exists?(product.id)%>
             <td><%= link_to 'Edit', edit_product_path(product) %></td>
             <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <%else%>
-              <td>
               <%=form_for cart.line_items.new do |form|%>
               <%=form.hidden_field :product_id, value: product.id%>
 
-              <%=form.number_field :quantity, value: 1, min: 1, max: quant%>
-              <%=form.submit "Add to cart",class: "btn"%>
+              <td><%=form.number_field :quantity,class: "form-control" ,value: 1, min: 1, max: quant%></td>
+              <td><%=form.submit "Add to cart",class: "btn btn-primary btn-sm"%></td>
               <%end%>
           <%end%>
         </tr>
