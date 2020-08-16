@@ -1,6 +1,8 @@
 class ReceiptsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @cart = Cart.find(session[:cart_id])
-    @line_items= @cart.line_items.all
+    @cart       = current_user.cart
+    @line_items = @cart.line_items
   end
 end
