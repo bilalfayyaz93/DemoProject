@@ -1,0 +1,46 @@
+<h1>Cart</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Supplier</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Net Price</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%@line_items.each do | line_item| %>
+      <%prod=Product.where(id: line_item.product_id).first%>
+      <%if prod.quantity < line_item.quantity%>
+        <%line_item.quantity=prod.quantity%>
+        <%line_item.save%>
+      <%end%>
+      <tr >
+        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{line_item.product_id}").first.name %></td>
+        <td><%= prod.title %></td>
+        <td><%= prod.description %></td>
+        <%if prod.photos.first%>
+          <td><%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%></td>
+          <%else%>
+          <td><img src='default.jpg' class= 'img'></td>
+        <%end%>
+        <%=form_for line_item do |f|%>
+          <td><%=f.number_field :quantity , min: 1,max: prod.quantity %></td>
+          <td><%=line_item.total_price %></td>
+          <td><%=f.submit 'update cart', class: "btn btn-primary btn-sm"%></td>
+        <%end%>
+        <td><%= button_to 'Show', prod, class: 'btn btn-primary btn-sm', method: :get %></td>
+        <td><%= button_to 'remove From Cart', line_item_path(line_item) ,class: 'btn btn-danger btn-sm',method: :delete %></td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+<div class="float-right">
+  <h4 >Total Price: <%=@cart.total_price%></h4>
+</div>
+<%= button_to 'Checkout', receipt_path, method: :get, class:"btn btn-primary" %>
+
+

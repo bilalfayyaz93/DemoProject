@@ -1,0 +1,63 @@
+<h1>Reciept</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Supplier</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Photo</th>
+      <th>Quantity</th>
+      <th>Net Price</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%@line_items.each do |product| %>
+      <%prod=Product.where(id: product.product_id).first%>
+      <%if prod.quantity < product.quantity%>
+        <%product.quantity=prod.quantity%>
+        <%product.save%>
+      <%end%>
+      <tr>
+        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.product_id}").first.name %></td>
+        <%prod=Product.where(id: product.product_id).first%>
+        <td><%= prod.title %></td>
+        <td><%= prod.description %></td>
+        <%if prod.photos.first%>
+          <td><%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%></td>
+          <%else%>
+          <td><img src='default.jpg' class= 'img'></td>
+        <%end%>
+        <td><%=product.quantity%></td>
+        <td><%= product.total_price %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%price=@cart.total_price%>
+
+  <h2>Total Price: <%=price%>$</h2>
+  <% coupen=Coupen.find_by(id: @cart.coupen_id)%>
+  <%if coupen%>
+    <h2>Discount <%=coupen.discount%>%</h2>
+    <h2>Net Price: <%=@cart.discount_price(price)%>$</h2>
+    <%= button_to "remove coupen", remove_coupen_cart_path(@cart), method: :patch %>
+    <%session[:total_price]=@cart.discount_price(price)%>
+  <%else%>
+    <h2>Discount 0%</h2>
+    <h2>Net Price: <%=price%>$</h2>
+    <%session[:total_price]=price%>
+
+    <%=form_with(model: @cart) do |f|%>
+      <%=f.label "Have a coupen?"%>
+
+      <%=f.text_field :code %>
+      <%=f.submit "Add coupen", class: "btn btn-primary btn-sm"%>
+    <%end%>
+  <%end%>
+<br>
+<%= button_to 'Confirm', new_charge_path, method: :get, class: "btn btn-primary btn-sm" %>
+
+
