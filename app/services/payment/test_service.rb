@@ -1,4 +1,5 @@
-  class ChargeService
+module Payment
+  class TestService
     def initialize(amount)
       @amount = amount
     end
@@ -21,3 +22,4 @@
         })
       end
   end
+end
