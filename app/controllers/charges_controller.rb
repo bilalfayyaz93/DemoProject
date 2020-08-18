@@ -7,18 +7,13 @@ class ChargesController < ApplicationController
     # Amount in cents
     @amount = (session[:total_price].to_f*100).to_i
 
-    customer = Stripe::Customer.create({
-      email: params[:stripeEmail],
-      source: params[:stripeToken],
-    })
+    service = Payment::ChargeService.new(@amount, params)
+    if service.call!
+      redirect_to new_order_path
+    else
 
-    charge = Stripe::Charge.create({
-      customer: customer.id,
-      amount: @amount,
-      description: 'Rails Stripe customer',
-      currency: 'usd',
-    })
-    redirect_to new_order_path
+    end
+
     rescue Stripe::CardError => e
     flash[:error] = e.message
     redirect_to new_charge_path
