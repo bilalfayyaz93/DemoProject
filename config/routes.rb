@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
-  get 'home/index'
   resource :cart do
     member do
       patch :remove_coupen
     end
   end
-  get 'cart', to: 'carts#index'
-  get 'receipt', to: 'receipts#index'
+  resource :receipt
   root 'products#index'
   devise_for :users do
   end

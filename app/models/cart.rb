@@ -1,6 +1,5 @@
 class Cart < ApplicationRecord
   has_many :line_items
-  belongs_to :user
   def total_price
     total = line_items.each.sum { |product| product.total_price }
   end

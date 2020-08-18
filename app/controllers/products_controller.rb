@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_user_product, only: [ :edit, :update, :destroy]
   before_action :set_product, only: [:show]
-
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
   def index
     @products = Product.all
     #Rails.logger.info "Check out this info!"

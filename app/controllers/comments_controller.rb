@@ -6,23 +6,15 @@ class CommentsController < ApplicationController
     @comment = @product.comments.build(comment_params)
     @comment.user = current_user
 
-    respond_to do |format|
-      if @comment.save
-        @count = @product.comments.count
-
-        format.js
-      else
-        format.html { render action: "new" }
-      end
+    if @comment.save
+      @count = @product.comments.count
+    else
+      redirect_to request.referer
     end
   end
 
   def destroy
     @comment.destroy
-
-    respond_to do |format|
-      format.js
-    end
   end
 
   private

@@ -20,10 +20,10 @@ class OrdersController < ApplicationController
     @cart.line_items.destroy_all
 
     if(@cart.coupen_id)
-      Coupen.find(@cart.coupen_id).destroy
       @cart.coupen_id=nil
       @cart.save
     end
+
     redirect_to root_path
   end
 

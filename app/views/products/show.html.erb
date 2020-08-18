@@ -1,4 +1,18 @@
+<div class="float-right">
+  <%cart = Cart.find(session[:cart_id].to_i)%>
+  <%if cart.line_items.exists?(product_id: @product.id)%>
+    <%quant = @product.quantity- cart.line_items.find_by(product_id: @product.id).quantity %>
+  <%else%>
+    <%quant = @product.quantity %>
+  <%end%>
+  <%=form_for cart.line_items.new, class: 'form' do |form|%>
+    <%=form.hidden_field :product_id, value: @product.id%>
+    <%=form.number_field :quantity,class: 'form-control' ,value: 1, min: 1, max: quant%>
+    <%=form.submit "Add to cart",class: "btn btn-primary"%>
+  <%end%>
+</div>
 <div class="container">
+
 <p>
   <strong>Supplier:</strong>
   <%= Product.joins(:user).select('products.id, users.name as name').where("products.id = #{params[:id]}").first.name %>
@@ -30,9 +44,11 @@
   <strong>Quantity:</strong>
   <%= @product.quantity %>
 </p>
+
 </div>
 <%flag = current_user && current_user.products.exists?(@product.id)%>
 <div class="container">
+    <h2><strong>photos</strong></h2>
     <%@product.photos.each do |photo|%>
       <%= image_tag(photo.variant(resize: '300x300').processed, class: 'img-thumbnail' )%>
       <%if flag %>
@@ -43,30 +59,30 @@
     <%end%>
 </div>
 <br>
-<%if flag %>
 <div class="container">
+<%if flag %>
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%end%>
 <%= link_to 'Back', request.referer %>
 </div>
-<h3 id="comments_count"  class="comments_title">
-  <%= @comments.count %> Comments
-</h3>
 
-<div id="comments">
+<div id="comments" class= "container">
+  <h3 id="comments_count"  class="comments_title">
+    <%= @comments.count %> Comments
+  </h3>
   <%= render @comments %>
 </div>
+<div class="container">
+  <%if current_user%>
+    <%= form_for [@product, @product.comments.new], remote: true do |f| %>
+      <div class="field">
+        <%= f.text_area :body, class: "form-control" %>
+      </div>
+      <br>
+      <%= f.submit "Add Comment" ,class: "btn btn-primary float-right" %>
+    <% end %>
 
-<%if current_user%>
-  <%= form_for [@product, @product.comments.new], remote: true do |f| %>
-    <div class="field">
-      <%= f.text_area :body, class: "form-control" %>
-    </div>
-    <br>
-    <%= f.submit "Add Comment" ,class: "btn btn-primary" %>
-  <% end %>
-
-<%else %>
-  <h3><%=link_to :'login first to add comment', new_user_session_path %></h3>
-<%end%>
-
+  <%else %>
+    <h3><%=link_to :'login first to add comment', new_user_session_path %></h3>
+  <%end%>
+</div>

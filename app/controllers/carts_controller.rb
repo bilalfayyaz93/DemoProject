@@ -1,7 +1,7 @@
 class CartsController < ApplicationController
   before_action :set_cart
 
-  def index
+  def show
     @line_items = @cart.line_items
   end
 
@@ -10,7 +10,9 @@ class CartsController < ApplicationController
     coupen = Coupen.find_by(coupen_code: params[:cart][:code])
 
     if coupen.blank?
-      redirect_to request.referer, notice: 'Coupen id does not exist'
+      redirect_to request.referer, notice: 'Coupen code does not exist'
+    elsif coupen.expirey < Date.today
+      redirect_to request.referer, notice: 'Coupen is expired'
     else
       @cart.coupen_id = coupen.id
       @cart.save

@@ -4,14 +4,20 @@ class LineItemsController < ApplicationController
 
   def create
     @line_item = @cart.line_items.build(line_item_params)
-    item=@cart.line_items.find_by(product_id: @line_item.product_id)
+    item       = @cart.line_items.find_by(product_id: @line_item.product_id)
+    product    = Product.find_by(id: @line_item.product_id)
     #check quantity
     if item
       item.quantity += @line_item.quantity
-
+      if item.quantity > product.quantity
+        item.quantity = product.quantity
+      end
       item.save
       @line_item.destroy
     else
+      if @line_item.quantity > product.quantity
+        @line_item.quantity = product.quantity
+      end
       @line_item.save
     end
     redirect_to request.referer, notice: 'line_item was successfully created.'
