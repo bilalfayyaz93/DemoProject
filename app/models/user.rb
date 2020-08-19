@@ -12,7 +12,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-     after_save :purge_avator, if: :remove_avator
+  after_save :purge_avator, if: :remove_avator
 
   def purge_avator
     self.avator.purge_later

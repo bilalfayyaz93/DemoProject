@@ -6,20 +6,24 @@ class LineItemsController < ApplicationController
     @line_item = @cart.line_items.build(line_item_params)
     item       = @cart.line_items.find_by(product_id: @line_item.product_id)
     product    = Product.find_by(id: @line_item.product_id)
-    #check quantity
+
+    if current_user && current_user.id == product.user_id
+      @line_item.destroy
+      return
+    end
+
     if item
       item.quantity += @line_item.quantity
-      if item.quantity > product.quantity
-        item.quantity = product.quantity
-      end
+      item.quantity = product.quantity if item.quantity > product.quantity
+
       item.save
       @line_item.destroy
     else
-      if @line_item.quantity > product.quantity
-        @line_item.quantity = product.quantity
-      end
+      @line_item.quantity  = product.quantity if @line_item.quantity > product.quantity
+
       @line_item.save
     end
+
     redirect_to request.referer, notice: 'line_item was successfully created.'
   end
 
@@ -39,7 +43,7 @@ class LineItemsController < ApplicationController
     end
 
     def set_cart
-      @cart= Cart.find(session[:cart_id])
+      @cart = Cart.find(session[:cart_id])
     end
 
     def line_item_params

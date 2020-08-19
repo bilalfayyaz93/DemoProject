@@ -1,16 +1,18 @@
-<div class="float-right">
-  <%cart = Cart.find(session[:cart_id].to_i)%>
-  <%if cart.line_items.exists?(product_id: @product.id)%>
-    <%quant = @product.quantity- cart.line_items.find_by(product_id: @product.id).quantity %>
-  <%else%>
-    <%quant = @product.quantity %>
-  <%end%>
-  <%=form_for cart.line_items.new, class: 'form' do |form|%>
-    <%=form.hidden_field :product_id, value: @product.id%>
-    <%=form.number_field :quantity,class: 'form-control' ,value: 1, min: 1, max: quant%>
-    <%=form.submit "Add to cart",class: "btn btn-primary"%>
-  <%end%>
-</div>
+<%if !current_user || current_user.id != @product.user_id%>
+  <div class="float-right">
+    <%cart = Cart.find(session[:cart_id].to_i)%>
+    <%if cart.line_items.exists?(product_id: @product.id)%>
+      <%quant = @product.quantity- cart.line_items.find_by(product_id: @product.id).quantity %>
+    <%else%>
+      <%quant = @product.quantity %>
+    <%end%>
+    <%=form_for cart.line_items.new,html: {class: 'form form-inline'} do |form|%>
+      <%=form.hidden_field :product_id, value: @product.id%>
+      <%=form.number_field :quantity,class: 'form-control' ,value: 1, min: 1, max: quant%>
+      <%=form.submit "Add to cart",class: "btn btn-primary"%>
+    <%end%>
+  </div>
+<%end%>
 <div class="container">
 
 <p>
@@ -52,7 +54,7 @@
     <%@product.photos.each do |photo|%>
       <%= image_tag(photo.variant(resize: '300x300').processed, class: 'img-thumbnail' )%>
       <%if flag %>
-      <%= link_to 'Remove', delete_image_product_path({img_id: photo.id}),
+      <%= link_to 'Remove', delete_image_product_path({img_id: photo.id}),class: 'btn btn-danger',
                 method: :delete,
                 data: { confirm: 'Are you sure?' } %>
       <%end%>
@@ -61,9 +63,9 @@
 <br>
 <div class="container">
 <%if flag %>
-<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Edit', edit_product_path(@product),class: 'btn btn-primary' %>
 <%end%>
-<%= link_to 'Back', request.referer %>
+<%= link_to 'Back', request.referer, class: 'btn btn-primary'%>
 </div>
 
 <div id="comments" class= "container">
@@ -73,7 +75,7 @@
   <%= render @comments %>
 </div>
 <div class="container">
-  <%if current_user%>
+  <%if current_user && current_user.id != @product.user_id %>
     <%= form_for [@product, @product.comments.new], remote: true do |f| %>
       <div class="field">
         <%= f.text_area :body, class: "form-control" %>
@@ -82,7 +84,7 @@
       <%= f.submit "Add Comment" ,class: "btn btn-primary float-right" %>
     <% end %>
 
-  <%else %>
-    <h3><%=link_to :'login first to add comment', new_user_session_path %></h3>
+  <%elsif !current_user %>
+    <h3><%=link_to 'login first to add comment', new_user_session_path, class: "btn btn-primary float-right" %></h3>
   <%end%>
 </div>

@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
     @cart.line_items.destroy_all
 
     if(@cart.coupen_id)
-      @cart.coupen_id=nil
+      @cart.coupen_id = nil
       @cart.save
     end
 
@@ -49,17 +49,18 @@ class OrdersController < ApplicationController
       @cart            = Cart.find(session[:cart_id])
       @order.coupen_id = @cart.coupen_id
       @line_items      = @cart.line_items.all
+
       @order.save
     end
 
     def update_product(prod_id, quantity)
       prod = Product.find(prod_id)
       prod.quantity -= quantity
+
       if prod.quantity.zero?
         prod.destroy
       else
         prod.save
       end
     end
-
 end

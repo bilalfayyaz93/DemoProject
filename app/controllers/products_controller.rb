@@ -2,13 +2,18 @@ class ProductsController < ApplicationController
   before_action :set_user_product, only: [ :edit, :update, :destroy]
   before_action :set_product, only: [:show]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+
   def index
-    @products = Product.all
+    if params[:search] == nil || params[:search].empty?
+      @products = Product.all
+    else
+      @products = Product.search(params[:search])
+    end
     #Rails.logger.info "Check out this info!"
   end
 
   def show
-    @comments= @product.comments.all
+    @comments = @product.comments.all
   end
 
   def new
@@ -46,10 +51,9 @@ class ProductsController < ApplicationController
   end
 
   def delete_image
-    @image = ActiveStorage::Attachment.find(params[:img_id])
-    @image.purge
+    ActiveStorage::Attachment.find(params[:img_id]).purge
 
-    redirect_back(fallback_location: request.referer)
+    redirect_to request.referer
   end
 
   private

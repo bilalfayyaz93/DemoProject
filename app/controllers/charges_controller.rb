@@ -7,14 +7,10 @@ class ChargesController < ApplicationController
     # Amount in cents
     @amount = (session[:total_price].to_f*100).to_i
 
-    service = Payment::ChargeService.new(@amount, params)
-    if service.call!
-      redirect_to new_order_path
-    else
+    Payment::ChargeService.new(@amount, params).call!
 
-    end
-
-    rescue Stripe::CardError => e
+    redirect_to new_order_path
+  rescue => e
     flash[:error] = e.message
     redirect_to new_charge_path
   end

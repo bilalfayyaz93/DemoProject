@@ -1,5 +1,4 @@
-<h2>Sign in</h2>
-
+<div class= "d-flex justify-content-center" >
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
   <div class="form-group">
@@ -19,9 +18,12 @@
   </div>
 
   <div class="form-group">
-  	<%= f.submit "Sign In", class: "btn btn-primary" %>
+  	<%= f.submit "Sign In", class: "btn btn-lg btn-primary" %>
   </div>
 
+  <div class = "form-group">
+    <%= render "devise/shared/links" %>
+  </div>
 <% end %>
+</div>
 
-<%= render "devise/shared/links" %>
