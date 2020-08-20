@@ -4,7 +4,10 @@ class CommentsController < ApplicationController
   def create
     @product = Product.find(params[:product_id])
     @comment = @product.comments.build(comment_params)
-
+    if @product.user_id == current_user.id
+      @comment.destroy
+      return
+    end
     @comment.user = current_user
 
     if @comment.save

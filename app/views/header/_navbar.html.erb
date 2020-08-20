@@ -14,14 +14,15 @@
       <li class="nav-item"><a href="#about", class= "fa fa-info-circle nav-link waves-effect" > about us</a></li>
 
       <%if current_user%>
-        <li class="nav-item"><%=link_to current_user.name.split[0].capitalize , edit_user_registration_path(current_user.id) ,class: "fa fa-user-circle fa-lg nav-link waves-effect" %> </li>
-        <li class="nav-item"><%=link_to 'Log out', destroy_user_session_path, method: :delete ,class: "fa fa-sign-out fa-lg nav-link waves-effect" %> </li>
+        <li class="nav-item"><%=link_to current_user.name.split[0].capitalize , edit_user_registration_path(current_user.id) ,class: "fa fa-user-circle  nav-link waves-effect" %> </li>
+        <li class="nav-item"><%=link_to "My Orders", orders_path ,class: "fa fa-book  nav-link waves-effect" %> </li>
+        <li class="nav-item"><%=link_to 'Log out', destroy_user_session_path, method: :delete ,class: "fa fa-sign-out  nav-link waves-effect" %> </li>
 
       <%else%>
-        <li class="nav-item"><%=link_to :Log_in, new_user_session_path, class: "fa fa-user fa-lg nav-link waves-effect" %> </li>
-        <li class="nav-item"><%=link_to :sign_up, new_user_registration_path, class: "fa fa-user-plus fa-lg nav-link waves-effect" %> </li>
+        <li class="nav-item"><%=link_to :Log_in, new_user_session_path, class: "fa fa-user  nav-link waves-effect" %> </li>
+        <li class="nav-item"><%=link_to :sign_up, new_user_registration_path, class: "fa fa-user-plus  nav-link waves-effect" %> </li>
       <%end%>
-      <li class="nav-item"><%=link_to "cart", cart_path, class: "fa fa-shopping-cart fa-lg nav-link waves-effect" %> </li>
+      <li class="nav-item"><%=link_to "cart", cart_path, class: "fa fa-shopping-cart  nav-link waves-effect" %> </li>
     </ul>
 
   </div>

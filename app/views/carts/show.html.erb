@@ -29,7 +29,7 @@
         <%end%>
         <%=form_for line_item do |f|%>
           <td><%=f.number_field :quantity , min: 1,max: prod.quantity %></td>
-          <td><%=line_item.total_price %></td>
+          <td><%=line_item.total_price %>$</td>
           <td><%=f.submit 'update cart', class: "btn btn-primary btn-sm"%></td>
         <%end%>
         <td><%= button_to 'Show', prod, class: 'btn btn-primary btn-sm', method: :get %></td>
@@ -38,9 +38,10 @@
     <%end%>
   </tbody>
 </table>
+<%if @line_items.size > 0%>
 <div class="float-right">
-  <h4 >Total Price: <%=@cart.total_price%></h4>
+  <h4 >Total Price: <%=@cart.total_price%>$</h4>
 </div>
 <%= button_to 'Checkout', receipt_path, method: :get, class:"btn btn-primary" %>
-
+<%end%>
 

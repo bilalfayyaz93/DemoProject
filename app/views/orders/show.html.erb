@@ -1,4 +1,3 @@
-<%=render 'header/navbar' %>
 <h1>Order</h1>
 
 <table class="table">
@@ -6,8 +5,8 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
+      <th>Photo</th>
       <th>Quantity</th>
-      <th>Discount %</th>
       <th>Net Price</th>
       <th colspan="4"></th>
     </tr>
@@ -16,14 +15,32 @@
   <tbody>
     <%@order_items.each do |product| %>
       <tr>
-        <%prod=Product.where(id: product.product_id).first%>
+        <%prod = Product.where(id: product.product_id).first%>
         <td><%= prod.title %></td>
         <td><%= prod.description %></td>
-
+        <%if prod.photos.first%>
+          <td><%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%></td>
+          <%else%>
+          <td><img src='default.jpg' class= 'img'></td>
+        <%end%>
         <td><%=product.quantity%></td>
-        <td>0</td>
         <td><%= product.total_price %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%price = @order.total_price%>
+
+  <h4>Total Price: <%=price%>$</h4>
+  <% coupen = Coupen.find_by(id: @order.coupen_id)%>
+  <%if coupen%>
+    <h4>Discount <%=coupen.discount%>%</h4>
+    <h4>Net Price: <%=@order.discount_price(price)%>$</h4>
+    <%= button_to "remove coupen", remove_coupen_cart_path(@order), method: :patch %>
+  <%else%>
+    <h4>Discount 0%</h4>
+    <h4>Net Price: <%=price%>$</h4>
+  <%end%>
+<br>
+<%=button_to "back", orders_path,method: :get, class: "btn btn-primary"%>

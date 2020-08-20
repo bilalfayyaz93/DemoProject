@@ -56,11 +56,6 @@ class OrdersController < ApplicationController
     def update_product(prod_id, quantity)
       prod = Product.find(prod_id)
       prod.quantity -= quantity
-
-      if prod.quantity.zero?
-        prod.destroy
-      else
-        prod.save
-      end
+      prod.save
     end
 end
