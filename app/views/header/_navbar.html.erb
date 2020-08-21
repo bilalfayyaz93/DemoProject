@@ -12,7 +12,6 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item"><a href="#contact-us", class= "fa fa-id-card  nav-link waves-effect" > contact us</a></li>
       <li class="nav-item"><a href="#about", class= "fa fa-info-circle nav-link waves-effect" > about us</a></li>
-
       <%if current_user%>
         <li class="nav-item"><%=link_to current_user.name.split[0].capitalize , edit_user_registration_path(current_user.id) ,class: "fa fa-user-circle  nav-link waves-effect" %> </li>
         <li class="nav-item"><%=link_to "My Orders", orders_path ,class: "fa fa-book  nav-link waves-effect" %> </li>

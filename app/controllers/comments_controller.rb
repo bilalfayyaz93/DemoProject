@@ -12,8 +12,6 @@ class CommentsController < ApplicationController
 
     if @comment.save
       @count = @product.comments.count
-    else
-      redirect_to request.referer
     end
   end
 
