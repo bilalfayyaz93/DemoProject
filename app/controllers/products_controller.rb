@@ -1,10 +1,10 @@
 class ProductsController < ApplicationController
-  before_action :set_user_product, only: [ :edit, :update, :destroy]
-  before_action :set_product, only: [:show]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+  before_action :set_user_product, only: [:edit, :update, :destroy]
+  before_action :set_product, only: [:show]
 
   def index
-    if params[:search] == nil || params[:search].empty?
+    if params[:search].nil? || params[:search].empty?#.blank?
       @products = Product.all
     else
       @products = Product.search(params[:search])
@@ -13,7 +13,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @comments = @product.comments.all
+    @comments = @product.comments
   end
 
   def new

@@ -18,7 +18,7 @@
       <%else%>
         <%quant=product.quantity %>
       <%end%>
-      <%if !quant.zero?%>
+      <% if !quant.zero?%>
         <tr>
           <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.id}").first.name %></td>
           <td><%= product.title %></td>
@@ -35,10 +35,10 @@
             <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger btn-sm" %></td>
           <%else%>
               <%=form_for cart.line_items.new do |form|%>
-              <%=form.hidden_field :product_id, value: product.id%>
+                <%=form.hidden_field :product_id, value: product.id%>
 
-              <td><%=form.number_field :quantity,class: "form-control" ,value: 1, min: 1, max: quant%></td>
-              <td><%=form.submit "Add to cart",class: "btn btn-primary btn-sm"%></td>
+                <td><%=form.number_field :quantity,class: "form-control" ,value: 1, min: 1, max: quant%></td>
+                <td><%=form.submit "Add to cart",class: "btn btn-primary btn-sm"%></td>
               <%end%>
           <%end%>
         </tr>
