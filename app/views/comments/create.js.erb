@@ -1,4 +1,3 @@
-$('#comments').append('<%= j render @comment %>');
+$('#tabs-3').append('<%= j render @comment %>');
 $('#new_comment')[0].reset();
-var count=parseInt($('#comments_count').text())+1;
-$('#comments_count').html('<%=j @count %> comments');
+$('#comments-count').html('Comments ( <%=j @count %> )');

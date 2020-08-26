@@ -1,46 +1,84 @@
-<h1>Order</h1>
+<section class="shop-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <%@order_items.each do | item| %>
+                                <%prod = Product.where(id: item.product_id).first%>
+                                <%if prod.quantity < item.quantity%>
+                                  <%item.quantity = prod.quantity%>
+                                  <%item.save%>
+                                <%end%>
+                                <tr>
+                                    <td class="cart__product__item">
+                                        <%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%>
+                                        <div class="cart__product__item__title">
+                                            <h6><%= prod.title %></h6>
+                                            <div class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">$ <%= prod.price.to_f %></td>
+                                    <td class="cart__quantity">
+                                          <%=item.quantity%>
+                                    </td>
+                                    <td class="cart__total">$ <%=item.total_price %>$</td>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Photo</th>
-      <th>Quantity</th>
-      <th>Net Price</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
+                                </tr>
+                            <%end%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="/products">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
 
-  <tbody>
-    <%@order_items.each do |product| %>
-      <tr>
-        <%prod = Product.where(id: product.product_id).first%>
-        <td><%= prod.title %></td>
-        <td><%= prod.description %></td>
-        <%if prod.photos.first%>
-          <td><%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%></td>
-          <%else%>
-          <td><img src='default.jpg' class= 'img'></td>
-        <%end%>
-        <td><%=product.quantity%></td>
-        <td><%= product.total_price %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%price = @order.total_price%>
-
-  <h4>Total Price: <%=price%>$</h4>
-  <% coupen = Coupen.find_by(id: @order.coupen_id)%>
-  <%if coupen%>
-    <h4>Discount <%=coupen.discount%>%</h4>
-    <h4>Net Price: <%=@order.discount_price(price)%>$</h4>
-    <%= button_to "remove coupen", remove_coupen_cart_path(@order), method: :patch %>
-  <%else%>
-    <h4>Discount 0%</h4>
-    <h4>Net Price: <%=price%>$</h4>
-  <%end%>
-<br>
-<%=button_to "back", orders_path,method: :get, class: "btn btn-primary"%>
+            <div class="row">
+                <%price = @order.total_price%>
+                <% coupen = Coupen.find_by(id: @order.coupen_id)%>
+                <%total_price = price%>
+                <%session[:total_price] = total_price%>
+                <%discount = 0%>
+                <div class="col-lg-6">
+                  <%=link_to "BACK", orders_path,method: :get, class: "primary-btn"%>
+                </div>
+                <%if coupen%>
+                  <%discount = coupen.discount%>
+                  <%total_price = @cart.discount_price(price)%>
+                  <%session[:total_price] = total_price%>
+                <%end%>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Order total</h6>
+                        <ul>
+                            <li>Subtotal <span>$ <%=price%></span></li>
+                            <li>Discount <span>% <%=discount%></span></li>
+                            <li>Total <span>$ <%=total_price%></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

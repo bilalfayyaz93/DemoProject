@@ -3,11 +3,10 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resource :receipt, only: [:show]
   resources :charges, only: [:new, :create]
   resources :orders , except: [:update, :edit]
   resources :comments, only: [:destroy]
-  resources :line_items, only: [:create, :destroy, :update]
+  resources :line_items, only: [:new, :create, :destroy, :update]
 
   resource :cart, only: [:show, :update] do
     member do
@@ -20,6 +19,9 @@ Rails.application.routes.draw do
       delete :delete_image
     end
 
+    collection do
+      get :user_products
+    end
     resources :comments, only: [:create]
   end
 end

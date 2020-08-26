@@ -3,5 +3,7 @@ $('.delete').bind('ajax:success',function()
   $(this).closest('div').parent().parent().fadeOut();
 }
 );
-var count=parseInt($('#comments_count').text())-1;
-$('#comments_count').text(count+' Comments');
+var text = $('#comments-count').text();
+var ind = text.indexOf('(') + 1;
+var count = parseInt(text.substr(ind))-1;
+$('#comments-count').html('Comments ( '+count + ' )');

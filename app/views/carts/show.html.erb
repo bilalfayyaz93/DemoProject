@@ -1,47 +1,133 @@
-<h1>Cart</h1>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Supplier</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Net Price</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%@line_items.each do | line_item| %>
-      <%prod=Product.where(id: line_item.product_id).first%>
-      <%if prod.quantity < line_item.quantity%>
-        <%line_item.quantity=prod.quantity%>
-        <%line_item.save%>
-      <%end%>
-      <tr >
-        <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{line_item.product_id}").first.name %></td>
-        <td><%= prod.title %></td>
-        <td><%= prod.description %></td>
-        <%if prod.photos.first%>
-          <td><%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%></td>
-          <%else%>
-          <td><img src='default.jpg' class= 'img'></td>
-        <%end%>
-        <%=form_for line_item do |f|%>
-          <td><%=f.number_field :quantity , min: 1,max: prod.quantity %></td>
-          <td><%=line_item.total_price %>$</td>
-          <td><%=f.submit 'update cart', class: "btn btn-primary btn-sm"%></td>
-        <%end%>
-        <td><%= button_to 'Show', prod, class: 'btn btn-primary btn-sm', method: :get %></td>
-        <td><%= button_to 'remove From Cart', line_item_path(line_item) ,class: 'btn btn-danger btn-sm',method: :delete %></td>
-      </tr>
-    <%end%>
-  </tbody>
-</table>
-<%if @line_items.size > 0%>
-<div class="float-right">
-  <h4 >Total Price: <%=@cart.total_price%>$</h4>
+<div class='breadcrumbs'>
+  <div class='inner'>
+    <ul class='cf'>
+      <li>
+        <%= link_to raw("<span>1</span><span>Home</span>"), products_path%>
+      </li>
+      <li>
+        <%= link_to raw("<span>2</span><span>Shop</span>"), products_path%>
+      </li>
+      <li>
+        <%= link_to raw("<span>3</span><span>My Products</span>"), user_products_products_path,class: ''%>
+      </li>
+      <li>
+        <%= link_to raw("<span>4</span><span>My Orders</span>"), orders_path,class: ''%>
+      </li>
+      <li>
+        <a class="active"><span>5</span><span>My Cart</span> </a>
+      </li>
+    </ul>
+  </div>
 </div>
-<%= button_to 'Checkout', receipt_path, method: :get, class:"btn btn-primary" %>
-<%end%>
+<section class="shop-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <%@line_items.each do | line_item| %>
+                                <%prod = Product.where(id: line_item.product_id).first%>
+                                <%if prod.quantity < line_item.quantity%>
+                                  <%line_item.quantity = prod.quantity%>
+                                  <%line_item.save%>
+                                <%end%>
+                                <tr>
+                                    <td class="cart__product__item">
+                                        <%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%>
+                                        <div class="cart__product__item__title">
+                                            <h6><%= prod.title %></h6>
+                                            <div class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">$ <%= prod.price.to_f %></td>
+                                    <td class="cart__quantity">
+                                        <div class="pro-qty">
+                                          <%=form_for line_item do |f|%>
+                                            <%=f.number_field :quantity , min: 1,max: prod.quantity %>
+                                        </div>
+                                        <div class= "row">
+                                          <%=f.submit 'UPDATE CART', class: "btn btn-light"%>
+                                        </div>
+                                            <%end%>
+                                    </td>
+                                    <td class="cart__total">$ <%=line_item.total_price %></td>
+
+                                    <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), line_item_path(line_item),method: :delete, date: {confirm: "are you sure?"} %></td>
+                                </tr>
+                            <%end%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="/products">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <% price = @cart.total_price %>
+                <% coupen = Coupen.find_by(id: @cart.coupen_id)%>
+                <%total_price = price%>
+                <%session[:total_price] = total_price%>
+                <%discount = 0%>
+                <%if coupen%>
+                  <%discount = coupen.discount%>
+                  <%total_price = @cart.discount_price(price)%>
+                  <%session[:total_price] = total_price%>
+                  <div class="col-lg-6">
+                    <div class="discount__content">
+                        <h6>Coupen Code</h6>
+                        <p><%=coupen.coupen_code%></p>
+                        <div class="row">
+                          <%= link_to "remove coupen", remove_coupen_cart_path(@cart), method: :patch,class: "primary-btn" %>
+                        </div>
+                    </div>
+                  </div>
+                <%else%>
+                  <div class="col-lg-6">
+                      <div class="discount__content">
+                          <h6>Discount codes</h6>
+                          <div class="row">
+                          <%=form_with(model: @cart, class: "form-inline") do |f|%>
+                              <%=f.text_field :code, placeholder: "Enter your coupon code" %>
+                              <%=f.submit "Apply" ,class:"site-btn "%>
+                          <%end%>
+                          </div>
+                      </div>
+                  </div>
+                <%end%>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>$ <%=price%></span></li>
+                            <li>Discount <span>% <%=discount%></span></li>
+                            <li>Total <span>$ <%=total_price%></span></li>
+                        </ul>
+                        <%= link_to 'Proceed to checkout', new_charge_path, method: :get, class:"primary-btn" %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 

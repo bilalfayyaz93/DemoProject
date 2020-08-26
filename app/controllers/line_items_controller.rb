@@ -2,6 +2,29 @@ class LineItemsController < ApplicationController
   before_action :set_cart
   before_action :set_line_item, only: [ :update, :destroy]
 
+  def new
+    product = Product.find_by(id: params[:prod_id])
+    if current_user && current_user.id == product.user_id
+      return
+    end
+
+    item = @cart.line_items.find_by(product_id: params[:prod_id])
+
+    if item
+      item.quantity += 1
+      item.quantity = product.quantity if item.quantity > product.quantity
+
+      item.save
+    else
+      @line_item = @cart.line_items.new
+      @line_item.quantity = 1
+      @line_item.product_id = product.id
+      @line_item.save
+    end
+
+    redirect_to request.referer, notice: 'line_item was successfully created.'
+  end
+
   def create
     @line_item = @cart.line_items.build(line_item_params)
     item       = @cart.line_items.find_by(product_id: @line_item.product_id)

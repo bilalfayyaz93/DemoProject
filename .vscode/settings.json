@@ -11,7 +11,7 @@
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
   "files.trimTrailingWhitespace": true,
-  "window.zoomLevel": 0,
+  "window.zoomLevel": -1,
   "files.insertFinalNewline": true,
   "workbench.startupEditor": "welcomePage",
   "workbench.iconTheme": "vscode-icons",
