@@ -4,7 +4,7 @@
       <%=link_to "SHOPING-101",root_path, class: "fa fa-home nav-link waves-effect"%>
   </div>
   <%=form_tag products_path, class:"form-inline",method: :get do %>
-    <%= text_field_tag :search, params[:search], class: "form-control mr-sm-2",placeholder: 'search'%>
+    <%= text_field_tag :search, session[:search], class: "form-control mr-sm-2",placeholder: 'search',value: params[:search]%>
     <%= submit_tag "Search", name: nil,  class: "btn btn-success"%>
   </form>
   <%end%>

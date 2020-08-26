@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   PRODUCTS_PER_PAGE = 8
 
   def index
-    if params[:search].nil? || params[:search].empty?#.blank?
+    if params[:search].blank?
       @products = Product.all.to_a
     else
       @products = Product.search(params[:search])
