@@ -35,7 +35,22 @@
   </div>
   <br>
   <div class="actions">
-    <%= form.submit "upload product",class: "btn btn-primary" %>
+    <%= form.submit "SAVE" ,class: "btn btn-dark" %>
   </div>
 <% end %>
 </div>
+<br>
+<%if product%>
+<div class = "container">
+  <div class="col-lg-12">
+    <div class = "row">
+      <%product.photos.each_with_index do |photo, index|%>
+          <div class = "col-lg-4">
+            <%= link_to raw("<span class='fa fa-times'></span>"), delete_image_product_path({img_id: photo.id, id: @product.id}),method: :delete, data: { confirm: 'Are you sure?' }  %>
+            <%= image_tag(photo, class: 'img' )%>
+          </div>
+      <%end%>
+    </div>
+  </div>
+</div>
+<%end%>

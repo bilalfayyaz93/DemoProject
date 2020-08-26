@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   validates :description, presence: true
   validates :price, presence: true
   validates :quantity, presence: true
+  validates :photos, presence: true
 
   belongs_to :user
 

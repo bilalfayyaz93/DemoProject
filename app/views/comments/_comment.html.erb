@@ -5,9 +5,9 @@
 			<p><small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %></small></p>
 		</div>
 
-		<div class="btn btn-danger btn-sm float-right ">
+		<div class="float-right ">
 			<% if comment.user == current_user %>
-        <%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?', remote: true }, class: "delete btn btn-sm btn-default" %>
+        <%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?', remote: true }, class: "primary-btn delete" %>
 			<% end %>
 		</div>
 	</div>

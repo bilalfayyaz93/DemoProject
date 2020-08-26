@@ -1,51 +1,94 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Supplier</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>photo</th>
-      <th>Price</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
+<div class='breadcrumbs'>
+  <div class='inner'>
+    <ul class='cf'>
+      <li>
+        <%= link_to raw("<span>1</span><span>Home</span>"), products_path%>
+      </li>
+      <li>
+        <a class="active"><span>2</span><span>Shop</span> </a>
+      </li>
+      <li>
+        <%= link_to raw("<span>3</span><span>My Products</span>"), user_products_products_path,class: ''%>
+      </li>
+      <li>
+        <%= link_to raw("<span>4</span><span>My Orders</span>"), orders_path,class: ''%>
+      </li>
+      <li>
+        <%= link_to raw("<span>5</span><span>My Cart</span>"), cart_path,class: ''%>
+      </li>
+    </ul>
+  </div>
+</div>
 
-  <tbody>
-    <%cart = Cart.find(session[:cart_id].to_i)%>
-    <% @products.each do |product| %>
-      <%if cart.line_items.exists?(product_id: product.id)%>
-        <%quant=product.quantity- cart.line_items.find_by(product_id: product.id).quantity %>
-      <%else%>
-        <%quant=product.quantity %>
-      <%end%>
-      <% if !quant.zero?%>
-        <tr>
-          <td><%= Product.joins(:user).select('users.name as name').where("products.id = #{product.id}").first.name %></td>
-          <td><%= product.title %></td>
-          <td><%= product.description %></td>
-          <%if product.photos.first%>
-          <td><%= link_to image_tag(product.photos.first, height: 150,width: 150, class: 'img' ), product%></td>
-          <%else%>
-          <td><img src='default.jpg' class= 'img'></td>
-          <%end%>
-          <td><%= product.price.to_s %></td>
-          <td><%= link_to 'Show', product,class: "btn btn-primary btn-sm" %></td>
-          <%if current_user && current_user.products.exists?(product.id)%>
-            <td><%= link_to 'Edit', edit_product_path(product),class: "btn btn-primary btn-sm" %></td>
-            <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger btn-sm" %></td>
-          <%else%>
-              <%=form_for cart.line_items.new do |form|%>
-                <%=form.hidden_field :product_id, value: product.id%>
 
-                <td><%=form.number_field :quantity,class: "form-control" ,value: 1, min: 1, max: quant%></td>
-                <td><%=form.submit "Add to cart",class: "btn btn-primary btn-sm"%></td>
-              <%end%>
-          <%end%>
-        </tr>
-      <%end%>
 
-    <% end %>
-  </tbody>
-</table>
-<br>
-<%= link_to 'Upload A Product', new_product_path, class: "btn btn-primary float-right" %>
+  <%cart = Cart.find(session[:cart_id].to_i)%>
+<%unless @products.blank?%>
+  <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="row">
+                      <% @products.each do |product| %>
+                        <%if cart.line_items.exists?(product_id: product.id)%>
+                          <%quant=product.quantity- cart.line_items.find_by(product_id: product.id).quantity %>
+                        <%else%>
+                          <%quant=product.quantity %>
+                        <%end%>
+
+                        <%if !quant.zero?%>
+                          <div class="col-lg-3 col-md-4">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg= ''>
+                                    <%= link_to image_tag(product.photos.first, height: 400, class: 'img' ), product%>
+                                    <ul class="product__hover">
+                                        <li><span><%= link_to raw("<span class='fa fa-eye'></span>"),product%></span></li>
+                                        <%if current_user && current_user.products.exists?(product.id)%>
+                                          <li><span><%= link_to raw("<span class='fa fa-trash'></span>"),product, method: :delete, data: { confirm: 'Are you sure?' }%></span></li>
+                                          <li><span><%= link_to raw("<span class='fa fa-edit'></span>"),edit_product_path(product)%></span></li>
+                                        <%else%>
+                                          <li><span><%= link_to raw("<span class='fa fa-shopping-cart'></span>"),new_line_item_path(prod_id: product.id)%></span></li>
+                                        <%end%>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><%= link_to product.title, product%></h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ <%=product.price.to_f%></div>
+
+                                </div>
+                            </div>
+                          </div>
+                        <%end%>
+                      <% end %>
+                      <div class="col-lg-12 text-center">
+                            <div class="pagination__option">
+                                <%if @page > 0%>
+                                  <%= link_to "", products_path(page: @page-1),class:"fa fa-angle-left"%>
+                                <%end%>
+                                <%= link_to @page+1, products_path(page: @page)%>
+                                <%if @page+1 < @page_count%>
+                                  <%= link_to "", products_path(page: @page+1),class:"fa fa-angle-right"%>
+                                <%end%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <%= link_to 'Upload A Product', new_product_path, class: "primary-btn float-right" %>
+        </div>
+
+    </section>
+
+<%end%>
+
+
+
+

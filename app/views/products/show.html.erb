@@ -1,81 +1,156 @@
-<%if !current_user || current_user.id != @product.user_id%>
-  <div class="float-right">
-    <%cart = Cart.find(session[:cart_id].to_i)%>
-    <%if cart.line_items.exists?(product_id: @product.id)%>
-      <%quant = @product.quantity- cart.line_items.find_by(product_id: @product.id).quantity %>
-    <%else%>
-      <%quant = @product.quantity %>
-    <%end%>
-    <%=form_for cart.line_items.new,html: {class: 'form form-inline'} do |form|%>
-      <%=form.hidden_field :product_id, value: @product.id%>
-      <%=form.number_field :quantity,class: 'form-control' ,value: 1, min: 1, max: quant%>
-      <%=form.submit "Add to cart",class: "btn btn-primary"%>
-    <%end%>
+<div class='breadcrumbs'>
+  <div class='inner'>
+    <ul class='cf'>
+      <li>
+        <%= link_to raw("<span>1</span><span>Home</span>"), products_path%>
+      </li>
+      <li>
+        <%= link_to raw("<span>2</span><span>Shop</span>"), products_path%>
+      </li>
+      <li>
+        <a class="active"><span>3</span><span><%=@product.title.capitalize%></span> </a>
+      </li>
+    </ul>
   </div>
-<%end%>
-<div class="container">
-
-<p>
-  <strong>Supplier:</strong>
-  <%= Product.joins(:user).select('products.id, users.name as name').where("products.id = #{params[:id]}").first.name %>
-</p>
 </div>
 
-<div class="container">
+    <%flag = @product.photos.count > 1 && current_user && current_user.products.exists?(@product.id) %>
+    <section class="product-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__left product__thumb nice-scroll">
+                            <%@product.photos.each_with_index do |photo, index|%>
+                              <% if flag%>
+                                <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), delete_image_product_path({img_id: photo.id, id: @product.id}),method: :delete,data: { confirm: 'Are you sure?' }  %></td>
+                              <%end%>
 
-<p>
-  <strong>Title:</strong>
-  <%= @product.title %>
-</p>
-</div>
+                              <%if index.zero? %>
+                               <a class="pt active">
+                                 <%= image_tag(photo, class: 'img' )%>
+                               </a>
+                              <%else%>
+                               <a >
+                                 <%= image_tag(photo, class: 'img' )%>
+                               </a>
+                              <%end%>
+                            <%end%>
+                        </div>
+                        <div class="product__details__slider__content">
+                            <div id = "thumbnail-img" class="product__details__pic__slider owl-carousel">
+                                <a href= <%=url_for(@product.photos.first)%> ><%= image_tag(@product.photos.first,html: {class: "product__big__img"} )%></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="product__details__text">
+                        <h3><%=@product.title%> <span>SUPPLIER: <%=User.find(@product.user_id).name.upcase%></span></h3>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                             <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <span>( 138 reviews )</span>
+                        </div>
+                        <div class="product__details__price">$ <%= @product.price.to_f %></div>
+                         <div class="">
+                                <strong>Description:</strong>
+                                <div><p><%= @product.description %></p></div>
+                        </div>
+                        <%if !current_user || current_user.id != @product.user_id%>
+                            <%cart = Cart.find(session[:cart_id].to_i)%>
+                            <%if cart.line_items.exists?(product_id: @product.id)%>
+                              <%quant = @product.quantity- cart.line_items.find_by(product_id: @product.id).quantity %>
+                            <%else%>
+                              <%quant = @product.quantity %>
+                            <%end%>
+                            <% unless quant.zero? %>
+                            <div class="product__details__button">
+                              <%=form_for cart.line_items.new,html: {class: 'form form-inline'} do |form|%>
+                                <%=form.hidden_field :product_id, value: @product.id%>
+                              <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="pro-qty">
+                                  <%=form.number_field :quantity ,value: 1, min: 1, max: quant%>
+                                </div>
+                              </div>
+                                <%=form.submit "ADD TO CART",class: "cart-btn"%>
+                              <%end%>
+                            </div>
+                            <%end%>
+                        <%end%>
 
-<div class="container">
-<p>
-  <strong>Description:</strong>
-  <%= @product.description %>
-</p>
-</div>
-<div class="container">
-<p>
-  <strong>Price:</strong>
-  <%= @product.price.to_s %>
-</p>
-</div>
-<div class="container">
-<p>
-  <strong>Quantity:</strong>
-  <%= @product.quantity %>
-</p>
+                        <div class="product__details__widget">
+                            <ul>
+                                <li>
+                                    <span>Availability:</span>
+                                    <% if @product.quantity %>
+                                      <div class="stock__checkbox">
+                                          <label for="stockin">
+                                              In Stock
+                                          </label>
+                                      </div>
+                                    <%else%>
+                                      <div class="stock__checkbox">
+                                          <label for="stockout">
+                                              Out of stock
+                                          </label>
+                                      </div>
+                                    <%end%>
+                                </li>
+                                <li>
+                                    <span>Promotions:</span>
+                                    <p>Free shipping</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Reviews ( 2 )</a>
+                            </li>
 
-</div>
-<%flag = current_user && current_user.products.exists?(@product.id)%>
-<div class="container">
-    <h2><strong>photos</strong></h2>
-    <%@product.photos.each do |photo|%>
-      <%= image_tag(photo.variant(resize: '300x300').processed, class: 'img-thumbnail' )%>
-      <%if flag %>
-      <%= link_to 'Remove', delete_image_product_path({img_id: photo.id}),class: 'btn btn-danger',
-                method: :delete,
-                data: { confirm: 'Are you sure?' } %>
-      <%end%>
-    <%end%>
-</div>
-<br>
+                            <li class="nav-item">
+                                <a id = "comments-count" class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Comments ( <%=@product.comments.count%> ) </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                <h6>Description</h6>
+                                <p><%=@product.description %></p>
+                            </div>
+                            <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                <h6>Reviews ( 2 )</h6>
+                                <p>this is so good</p>
+                                <p>this is so good. I love this product.</p>
+                            </div>
+                            <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                <%= render @comments%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 <div class="container">
 <%if flag %>
 <%= link_to 'Edit', edit_product_path(@product),class: 'btn btn-primary' %>
 <%end%>
 <%= link_to 'Back', request.referer, class: 'btn btn-primary'%>
 </div>
-
-<div id="comments" class= "container">
-  <h3 id="comments_count"  class="comments_title">
-    <%= @comments.count %> Comments
-  </h3>
-  <%= render @comments %>
-</div>
 <div class="container">
-  <%if current_user && current_user.id != @product.user_id %>
+  <%if current_user %>
     <%= form_for [@product, @product.comments.new], remote: true do |f| %>
       <div class="field">
         <%= f.text_area :body, class: "form-control" %>
@@ -85,6 +160,7 @@
     <% end %>
 
   <%elsif !current_user %>
-    <h3><%=link_to 'login first to add comment', new_user_session_path, class: "btn btn-primary float-right" %></h3>
+    <h3><%=link_to 'login here to add comment', new_user_session_path, class: "btn btn-primary float-right" %></h3>
   <%end%>
 </div>
+<%= javascript_pack_tag 'scripts', 'data-turbolinks-track': 'reload' %>

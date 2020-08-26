@@ -5,23 +5,20 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
 
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= tag :meta, name: "stripe-key", content: STRIPE_PUBLIC_KEY%>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     </head>
-    <style>
-      body {
-        margin: 50px ;
-        background-color: #FFFFFF;
-      }
-    </style>
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+
     <%=render 'header/navbar' %>
+
     <%= yield %>
     <%= render 'footer/footer'%>
   </body>
