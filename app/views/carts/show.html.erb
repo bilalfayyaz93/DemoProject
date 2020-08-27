@@ -68,7 +68,7 @@
                                     </td>
                                     <td class="cart__total">$ <%=line_item.total_price %></td>
 
-                                    <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), line_item_path(line_item),method: :delete, date: {confirm: "are you sure?"} %></td>
+                                    <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), line_item_path(line_item),method: :delete, date: { confirm: "are you sure?" } %></td>
                                 </tr>
                             <%end%>
                             </tbody>

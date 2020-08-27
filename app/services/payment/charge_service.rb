@@ -1,8 +1,9 @@
 module Payment
   class ChargeService
-    def initialize(amount, params)
+    def initialize(amount, email, token)
       @amount = amount
-      @params = params
+      @stripe_email  = email
+      @stripe_token  = token
     end
 
     def call!
@@ -12,8 +13,8 @@ module Payment
     private
       def charge_payment!
         customer = Stripe::Customer.create({
-        email: @params[:stripeEmail],
-        source: @params[:stripeToken],})
+        email: @stripe_email,
+        source: @stripe_token,})
 
         charge = Stripe::Charge.create({
           customer: customer.id,

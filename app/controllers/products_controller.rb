@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   PRODUCTS_PER_PAGE = 8
 
   def index
-    if params[:search].blank?
+    if params[:search].nil?
       @products = Product.all.to_a
     else
       @products = Product.search(params[:search])
@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
   end
 
   def user_products
-    @products = Product.where(user_id: current_user.id).all
+    @products = Product.where(user_id: current_user.id).all#current_user.products
 
     @page_count = (@products.count.to_f / PRODUCTS_PER_PAGE).ceil
     @page       = [[params.fetch(:page, 0).to_i, 0].max, @page_count-1].min

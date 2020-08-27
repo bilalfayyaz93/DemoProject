@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :charges, only: [:new, :create]
-  resources :orders , except: [:update, :edit]
+  resources :orders , only: [:index, :show, :new]
   resources :comments, only: [:destroy]
-  resources :line_items, only: [:new, :create, :destroy, :update]
+  resources :line_items, only: [:create, :destroy, :update]
 
   resource :cart, only: [:show, :update] do
     member do

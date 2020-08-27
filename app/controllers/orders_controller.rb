@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_order, only: [:show, :destroy]
+  before_action :set_order, only: [:show ]
   before_action :set_attr, only: [:new]
 
   def index
@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order_items = @order.sold_products
+    @order_items = @order.sold_products.includes(:product)
   end
 
   def new
@@ -25,14 +25,6 @@ class OrdersController < ApplicationController
     end
 
     redirect_to root_path
-  end
-
-  def destroy
-    if @order.destroy
-      redirect_to orders_url, notice: 'Order was successfully destroyed.'
-    else
-      redirect_to orders_url, notice: 'Order was not successfully destroyed.'
-    end
   end
 
   private
@@ -53,7 +45,7 @@ class OrdersController < ApplicationController
       @order.save
     end
 
-    def update_product(prod_id, quantity)
+    def update_product(prod_id, quantity)#should not be here
       prod = Product.find(prod_id)
       prod.quantity -= quantity
       prod.save

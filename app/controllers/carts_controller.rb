@@ -1,8 +1,9 @@
 class CartsController < ApplicationController
   before_action :set_cart
   before_action :set_coupen, only: [:update]
+
   def show
-    @line_items = @cart.line_items
+    @line_items = @cart.line_items.includes(:product)
   end
 
   def update
@@ -14,7 +15,7 @@ class CartsController < ApplicationController
       @cart.coupen_id = @coupen.id
       @cart.save
 
-      redirect_to request.referer
+      redirect_to request.referer, notice: 'Coupen added successfully'
     end
   end
 

@@ -21,8 +21,8 @@ class ApplicationController < ActionController::Base
       if current_user
         session[:is_user_cart_set] = true
         session_cart = Cart.find(session[:cart_id])
-        @cart = Cart.where(user_id: current_user.id).first
-
+        @cart = current_user.cart
+        #first_initialize
         if(@cart)
           return if(session_cart.id == @cart.id)
 

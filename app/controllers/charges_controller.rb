@@ -1,16 +1,16 @@
 class ChargesController < ApplicationController
   def new
-    @amount = (session[:total_price].to_f*100).to_i
+    @amount = (session[:total_price]*100).to_i
   end
 
   def create
     # Amount in cents
-    @amount = (session[:total_price].to_f*100).to_i
-
-    Payment::ChargeService.new(@amount, params).call!
+    amount = (session[:total_price]*100).to_i
+    Payment::ChargeService.new(amount, params[:stripeEmail], params[:stripeToken]).call!
 
     redirect_to new_order_path
-  rescue => e
+
+  rescue Stripe::CardError => e
     flash[:error] = e.message
     redirect_to new_charge_path
   end
