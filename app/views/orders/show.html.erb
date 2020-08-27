@@ -66,7 +66,7 @@
                 </div>
                 <%if coupen%>
                   <%discount = coupen.discount%>
-                  <%total_price = @cart.discount_price(price)%>
+                  <%total_price = @order.discount_price(price)%>
                   <%session[:total_price] = total_price%>
                 <%end%>
                 <div class="col-lg-4 offset-lg-2">
