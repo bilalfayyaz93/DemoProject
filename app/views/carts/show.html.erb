@@ -91,7 +91,11 @@
                 <%session[:total_price] = total_price%>
                 <%discount = 0%>
                 <%if coupen%>
-                  <%discount = coupen.discount%>
+                  <% if coupen.expirey > DateTime.now %>
+                    <%discount = coupen.discount%>
+                  <%else%>
+                    <%discount = 0%>
+                  <%end%>
                   <%total_price = @cart.discount_price(price)%>
                   <%session[:total_price] = total_price%>
                   <div class="col-lg-6">
