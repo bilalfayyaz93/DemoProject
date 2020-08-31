@@ -4,27 +4,28 @@
       <%=link_to "SHOPING-101",root_path, class: "fa fa-home nav-link waves-effect"%>
   </div>
   <%=form_tag products_path, class:"form-inline",method: :get do %>
-    <%= text_field_tag :search, session[:search], class: "form-control mr-sm-2",placeholder: 'search',value: params[:search]%>
+    <%= text_field_tag :search, session[:search], class: "form-control mr-sm-2",placeholder: 'search',value: params[:search],list: 'products'%>
+    <datalist id='products'>
+      <option value = "abc"></option>
+    </datalist>
     <%= submit_tag "Search", name: nil,  class: "btn btn-success"%>
   </form>
   <%end%>
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto">
-      <a href="#contact-us", class= "fa fa-id-card  nav-link waves-effect" > contact us</a>
-      <a href="#about", class= "fa fa-info-circle nav-link waves-effect" > about us</a>
+      <a href="#contact-us", class= "fa fa-id-card btn-lg nav-link waves-effect", title = "contact us" ></a>
+      <a href="#about", class= "fa fa-info-circle btn-lg nav-link waves-effect", title = "about us" > </a>
 
       <%if current_user%>
-        <%=link_to current_user.name.split[0].upcase , edit_user_registration_path(current_user.id) ,class: "fa fa-user-circle  nav-link waves-effect" %>
-        <%=link_to "DASHBOARD", user_products_products_path ,class: "fa fa-book nav-link waves-effect" %>
-        <%=link_to "My Orders", orders_path ,class: "fa fa-book  nav-link waves-effect" %>
-        <%=link_to 'Log out', destroy_user_session_path, method: :delete,date: {confirm: "are you sure?"} ,class: "fa fa-sign-out  nav-link waves-effect" %>
+        <%=link_to "" , edit_user_registration_path(current_user.id) ,class: "fa fa-user-circle btn-lg nav-link waves-effect", title: "my profile" %>
+        <%=link_to '', destroy_user_session_path, method: :delete,date: {confirm: "are you sure?"} ,class: "fa fa-sign-out-alt btn-lg nav-link waves-effect", title: "sign out" %>
 
       <%else%>
-        <%=link_to :Log_in, new_user_session_path, class: "fa fa-user  nav-link waves-effect" %>
-        <%=link_to :sign_up, new_user_registration_path, class: "fa fa-user-plus  nav-link waves-effect" %>
+        <%=link_to "", new_user_session_path, class: "fa fa-user btn-lg nav-link waves-effect", title: "sign in" %>
+        <%=link_to "", new_user_registration_path, class: "fa fa-user-plus btn-lg nav-link waves-effect", title: "sign up" %>
       <%end%>
 
-      <%=link_to "cart", cart_path, class: "fa fa-shopping-cart  nav-link waves-effect" %>
+      <%=link_to "", cart_path, class: "fa fa-shopping-cart btn-lg nav-link waves-effect", title: "cart" %>
     </ul>
 
   </div>

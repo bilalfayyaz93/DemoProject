@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="product__details__text">
-                        <h3><%=@product.title%> <span>SUPPLIER: <%=User.find(@product.user_id).name.upcase%></span></h3>
+                        <h3><%=@product.title%> <span>SUPPLIER: <%=@product.user.name.upcase%></span></h3>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>

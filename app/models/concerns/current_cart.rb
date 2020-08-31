@@ -1,8 +1,8 @@
 module CurrentCart
   def set_cart
-    @cart=Cart.find(session[:cart_id])
+    @current_cart = Cart.find(session[:cart_id])
   rescue ActiveRecord::RecordNotFound
-    @cart= Cart.create
-    session[:card_id]=@cart.id
+    @current_cart = Cart.create
+    session[:cart_id] = @current_cart.id
   end
 end
