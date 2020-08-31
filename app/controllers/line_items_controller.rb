@@ -1,5 +1,4 @@
 class LineItemsController < ApplicationController
-  before_action :set_cart
   before_action :set_line_item, only: [ :update, :destroy]
 
   def create
@@ -9,15 +8,15 @@ class LineItemsController < ApplicationController
       return
     end
 
-    item = @cart.line_items.find_by(product_id: params[:line_item][:product_id])
+    item = current_cart.line_items.find_by(product_id: params[:line_item][:product_id])
 
     if item
-      item.quantity += @line_item.quantity
+      item.quantity += params[:line_item][:quantity].to_i
       item.quantity = product.quantity if item.quantity > product.quantity
 
       item.save
     else
-      @line_item = @cart.line_items.build(line_item_params)
+      @line_item = current_cart.line_items.build(line_item_params)
       @line_item.quantity  = product.quantity if @line_item.quantity > product.quantity
 
       @line_item.save
@@ -41,11 +40,7 @@ class LineItemsController < ApplicationController
 
   private
     def set_line_item
-      @line_item = @cart.line_items.find(params[:id])
-    end
-
-    def set_cart
-      @cart = Cart.find(session[:cart_id])
+      @line_item = current_cart.line_items.find(params[:id])
     end
 
     def line_item_params

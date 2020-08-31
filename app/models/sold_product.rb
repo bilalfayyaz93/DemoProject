@@ -1,8 +1,9 @@
 class SoldProduct < ApplicationRecord
   belongs_to :order
+  belongs_to :product
 
   def total_price
-    price = Product.find(self.product_id).price * self.quantity
+    price = self.price * self.quantity
   end
 
 end

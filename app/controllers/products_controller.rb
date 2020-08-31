@@ -17,11 +17,10 @@ class ProductsController < ApplicationController
     #@products  = @products.offset(@page * PRODUCTS_PER_PAGE).limit(PRODUCTS_PER_PAGE)
     @products   = @products[@page * PRODUCTS_PER_PAGE, PRODUCTS_PER_PAGE]
 
-    #Rails.logger.info "Check out this info!"
   end
 
   def user_products
-    @products = Product.where(user_id: current_user.id).all#current_user.products
+    @products = current_user.products
 
     @page_count = (@products.count.to_f / PRODUCTS_PER_PAGE).ceil
     @page       = [[params.fetch(:page, 0).to_i, 0].max, @page_count-1].min
@@ -29,7 +28,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @comments = @product.comments
+    @comments = @product.comments.includes(:user)
   end
 
   def new
@@ -60,9 +59,9 @@ class ProductsController < ApplicationController
 
   def destroy
     if @product.destroy
-      redirect_to products_url, notice: 'Product was successfully destroyed.'
+      redirect_to request.referer, notice: 'Product was successfully destroyed.'
     else
-      redirect_to products_url, notice: 'Product was not successfully destroyed.'
+      redirect_to request.referer, products_url, notice: 'Product was not successfully destroyed.'
     end
   end
 

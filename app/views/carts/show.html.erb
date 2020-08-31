@@ -37,10 +37,7 @@
                             <tbody>
                               <%@line_items.each do | line_item| %>
                                 <%prod = Product.where(id: line_item.product_id).first%>
-                                <%if prod.quantity < line_item.quantity%>
-                                  <%line_item.quantity = prod.quantity%>
-                                  <%line_item.save%>
-                                <%end%>
+                                <%unless prod.quantity.zero?%>
                                 <tr>
                                     <td class="cart__product__item">
                                         <%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%>
@@ -70,6 +67,7 @@
 
                                     <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), line_item_path(line_item),method: :delete, date: { confirm: "are you sure?" } %></td>
                                 </tr>
+                                <%end%>
                             <%end%>
                             </tbody>
                         </table>
@@ -85,21 +83,25 @@
             </div>
 
             <div class="row">
-                <% price = @cart.total_price %>
-                <% coupen = Coupen.find_by(id: @cart.coupen_id)%>
+                <% price = current_cart.total_price %>
+                <% coupen = Coupen.find_by(id: current_cart.coupen_id)%>
                 <%total_price = price%>
                 <%session[:total_price] = total_price%>
                 <%discount = 0%>
                 <%if coupen%>
-                  <%discount = coupen.discount%>
-                  <%total_price = @cart.discount_price(price)%>
+                  <% if coupen.expirey > DateTime.now %>
+                    <%discount = coupen.discount%>
+                  <%else%>
+                    <%discount = 0%>
+                  <%end%>
+                  <%total_price = current_cart.discount_price(price)%>
                   <%session[:total_price] = total_price%>
                   <div class="col-lg-6">
                     <div class="discount__content">
                         <h6>Coupen Code</h6>
                         <p><%=coupen.coupen_code%></p>
                         <div class="row">
-                          <%= link_to "remove coupen", remove_coupen_cart_path(@cart), method: :patch,class: "primary-btn" %>
+                          <%= link_to "remove coupen", remove_coupen_cart_path(current_cart), method: :patch,class: "primary-btn" %>
                         </div>
                     </div>
                   </div>
@@ -108,7 +110,7 @@
                       <div class="discount__content">
                           <h6>Discount codes</h6>
                           <div class="row">
-                          <%=form_with(model: @cart, class: "form-inline") do |f|%>
+                          <%=form_with(model: current_cart, class: "form-inline") do |f|%>
                               <%=f.text_field :code, placeholder: "Enter your coupon code" %>
                               <%=f.submit "Apply" ,class:"site-btn "%>
                           <%end%>

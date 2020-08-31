@@ -1,9 +1,8 @@
 class CartsController < ApplicationController
-  before_action :set_cart
   before_action :set_coupen, only: [:update]
 
   def show
-    @line_items = @cart.line_items.includes(:product)
+    @line_items = current_cart.line_items.includes(:product)
   end
 
   def update
@@ -12,16 +11,16 @@ class CartsController < ApplicationController
     elsif @coupen.expirey < Date.today
       redirect_to request.referer, notice: 'Coupen is expired'
     else
-      @cart.coupen_id = @coupen.id
-      @cart.save
+      current_cart.coupen_id = @coupen.id
+      current_cart.save
 
       redirect_to request.referer, notice: 'Coupen added successfully'
     end
   end
 
   def remove_coupen
-    @cart.coupen_id = nil
-    if @cart.save
+    current_cart.coupen_id = nil
+    if current_cart.save
       redirect_to request.referer, notice: 'coupen removed successfully'
     else
       redirect_to request.referer, notice: 'coupen removed failed'
@@ -29,10 +28,6 @@ class CartsController < ApplicationController
   end
 
   private
-    def set_cart
-      @cart = Cart.find(session[:cart_id])
-    end
-
     def cart_params
       params.require(:cart).permit(:coupen_id, :user_id)
     end

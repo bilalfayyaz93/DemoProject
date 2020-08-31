@@ -7,9 +7,6 @@ class CommentsController < ApplicationController
     if @product.nil?
       return
     end
-    #if @product.user_id == current_user.id
-    #  return
-    #end
 
     @comment = @product.comments.build(comment_params)
 

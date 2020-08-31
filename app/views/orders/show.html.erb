@@ -15,7 +15,7 @@
                             </thead>
                             <tbody>
                               <%@order_items.each do | item| %>
-                                <%prod = Product.where(id: item.product_id).first%>
+                                <%prod = item.product%>
                                 <%if prod.quantity < item.quantity%>
                                   <%item.quantity = prod.quantity%>
                                   <%item.save%>
@@ -34,7 +34,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart__price">$ <%= prod.price.to_f %></td>
+                                    <td class="cart__price">$ <%= item.price %></td>
                                     <td class="cart__quantity">
                                           <%=item.quantity%>
                                     </td>
