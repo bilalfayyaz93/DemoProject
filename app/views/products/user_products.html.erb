@@ -2,19 +2,16 @@
   <div class='inner'>
     <ul class='cf'>
       <li>
-        <%= link_to raw("<span>1</span><span>Home</span>"), products_path%>
+        <%= link_to raw("<span>1</span><span>Home</span>"), root_path%>
       </li>
       <li>
-        <%= link_to raw("<span>2</span><span>Shop</span>"), products_path%>
+        <a class="active"><span>2</span><span>My Products</span> </a>
       </li>
       <li>
-        <a class="active"><span>3</span><span>My Products</span> </a>
+        <%= link_to raw("<span>3</span><span>My Orders</span>"), orders_path,class: ''%>
       </li>
       <li>
-        <%= link_to raw("<span>4</span><span>My Orders</span>"), orders_path,class: ''%>
-      </li>
-      <li>
-        <%= link_to raw("<span>5</span><span>My Cart</span>"), cart_path,class: ''%>
+        <%= link_to raw("<span>4</span><span>My Cart</span>"), cart_path,class: ''%>
       </li>
     </ul>
   </div>
