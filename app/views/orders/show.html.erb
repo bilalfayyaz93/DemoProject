@@ -16,10 +16,6 @@
                             <tbody>
                               <%@order_items.each do | item| %>
                                 <%prod = item.product%>
-                                <%if prod.quantity < item.quantity%>
-                                  <%item.quantity = prod.quantity%>
-                                  <%item.save%>
-                                <%end%>
                                 <tr>
                                     <td class="cart__product__item">
                                         <%= link_to image_tag(prod.photos.first, height: 150,width: 150, class: 'img' ), prod%>
@@ -57,7 +53,7 @@
 
             <div class="row">
                 <%price = @order.total_price%>
-                <% coupen = Coupen.find_by(id: @order.coupen_id)%>
+                <% coupen = @order.coupen%>
                 <%total_price = price%>
                 <%session[:total_price] = total_price%>
                 <%discount = 0%>

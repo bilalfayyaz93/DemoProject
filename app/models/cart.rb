@@ -9,9 +9,9 @@ class Cart < ApplicationRecord
 
   def discount_price(total)
     if self.coupen && self.coupen.expirey > DateTime.now
-      (total.to_f*((100-self.coupen.discount).to_f/100)).round(2)
+      10
     else
-      total
+      20
     end
   end
 end

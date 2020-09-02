@@ -58,7 +58,7 @@
                                         <div class= "row">
                                           <%=f.submit 'UPDATE CART', class: "btn btn-light"%>
                                         </div>
-                                            <%end%>
+                                        <%end%>
                                     </td>
                                     <td class="cart__total">$ <%=line_item.total_price %></td>
 
@@ -79,49 +79,22 @@
                 </div>
             </div>
               <%unless @line_items.count.zero?%>
-              <div class="row">
+                <div class="row">
                   <% price = current_cart.total_price %>
-                  <% coupen = Coupen.find_by(id: current_cart.coupen_id)%>
+                  <% coupen = current_cart.coupen%>
                   <%total_price = price%>
                   <%session[:total_price] = total_price%>
                   <%discount = 0%>
-                  <%if coupen%>
-                    <% if coupen.expirey > DateTime.now %>
-                      <%discount = coupen.discount%>
-                    <%else%>
-                      <%discount = 0%>
-                    <%end%>
-                    <%total_price = current_cart.discount_price(price)%>
-                    <%session[:total_price] = total_price%>
-                    <div class="col-lg-6">
-                      <div class="discount__content">
-                          <h6>Coupen Code</h6>
-                          <p><%=coupen.coupen_code%></p>
-                          <div class="row">
-                            <%= link_to "remove coupen", remove_coupen_cart_path(current_cart), method: :patch,class: "primary-btn" %>
-                          </div>
-                      </div>
-                    </div>
-                  <%else%>
-                    <div class="col-lg-6">
-                        <div class="discount__content">
-                            <h6>Discount codes</h6>
-                            <div class="row">
-                            <%=form_with(model: current_cart, class: "form-inline") do |f|%>
-                                <%=f.text_field :code, placeholder: "Enter your coupon code" %>
-                                <%=f.submit "Apply" ,class:"site-btn "%>
-                            <%end%>
-                            </div>
-                        </div>
-                    </div>
-                  <%end%>
+                  <div class = "col-lg-6" id = "coupen">
+                    <%= render 'coupen', coupen: coupen, price: price%>
+                  </div>
                   <div class="col-lg-4 offset-lg-2">
                       <div class="cart__total__procced">
                           <h6>Cart total</h6>
                           <ul>
                               <li>Subtotal <span>$ <%=price%></span></li>
-                              <li>Discount <span>% <%=discount%></span></li>
-                              <li>Total <span>$ <%=total_price%></span></li>
+                              <li>Discount <span id = "discount">% <%=session[:discount]%></span></li>
+                              <li>Total <span id = "total_price">$ <%=session[:total_price]%></span></li>
                           </ul>
                           <%= link_to 'Proceed to checkout', new_charge_path, method: :get, class:"primary-btn" %>
                       </div>
