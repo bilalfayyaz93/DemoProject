@@ -4,23 +4,15 @@ class CommentsController < ApplicationController
   before_action :set_product, only: [:create]
 
   def create
-    if @product.nil?
-      return
-    end
+    return if @product.nil?
 
     @comment = @product.comments.build(comment_params)
-
     @comment.user = current_user
-
-    if @comment.save
-      @count = @product.comments.count
-    end
+    @count = @product.comments.count if @comment.save
   end
 
   def destroy
-    unless @comment.nil?
-      @comment.destroy
-    end
+    @comment.destroy unless @comment.nil?
   end
 
   private

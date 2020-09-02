@@ -18,6 +18,7 @@ class Product < ApplicationRecord
   def update_cart_record
     line_items = LineItem.includes(:product).where(product_id: self.id)
     line_items.each do | item |
+
       if item.quantity > item.product.quantity
         item.quantity = item.product.quantity
         item.save

@@ -27,8 +27,5 @@ module CreateOrder
       current_cart.coupen_id = nil
       current_cart.save
     end
-
   end
-
-
 end

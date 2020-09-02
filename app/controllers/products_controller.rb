@@ -6,17 +6,12 @@ class ProductsController < ApplicationController
   PRODUCTS_PER_PAGE = 8
 
   def index
-    if params[:search].nil?
-      @products = Product.all.to_a
-    else
-      @products = Product.search(params[:search])
-    end
+    @products = Product.search(params[:search])
 
     @page_count = (@products.count.to_f / PRODUCTS_PER_PAGE).ceil
     @page       = [[params.fetch(:page, 0).to_i, 0].max, @page_count-1].min
     #@products  = @products.offset(@page * PRODUCTS_PER_PAGE).limit(PRODUCTS_PER_PAGE)
     @products   = @products[@page * PRODUCTS_PER_PAGE, PRODUCTS_PER_PAGE]
-
   end
 
   def user_products

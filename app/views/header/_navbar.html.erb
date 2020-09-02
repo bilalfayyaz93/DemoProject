@@ -5,7 +5,7 @@
   </div>
   <%=form_tag products_path, class:"form-inline",method: :get do %>
     <%= text_field_tag :search, session[:search], class: "form-control mr-sm-2",placeholder: 'search',value: params[:search],list: 'products'%>
-    <datalist id='products'>
+    <datalist id='searched_products_list'>
       <option value = "abc"></option>
     </datalist>
     <%= submit_tag "Search", name: nil,  class: "btn btn-success"%>
@@ -18,7 +18,7 @@
 
       <%if current_user%>
         <%=link_to "" , edit_user_registration_path(current_user.id) ,class: "fa fa-user-circle btn-lg nav-link waves-effect", title: "my profile" %>
-        <%=link_to '', destroy_user_session_path, method: :delete,date: {confirm: "are you sure?"} ,class: "fa fa-sign-out-alt btn-lg nav-link waves-effect", title: "sign out" %>
+        <%=link_to "", destroy_user_session_path, method: :delete,date: {confirm: "are you sure?"} ,class: "fa fa-sign-out-alt btn-lg nav-link waves-effect", title: "sign out" %>
 
       <%else%>
         <%=link_to "", new_user_session_path, class: "fa fa-user btn-lg nav-link waves-effect", title: "sign in" %>

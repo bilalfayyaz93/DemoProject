@@ -6,24 +6,17 @@ class CartsController < ApplicationController
   end
 
   def update
-    if @coupen.blank?
-      redirect_to request.referer, notice: 'Coupen code does not exist'
-    elsif @coupen.expirey < Date.today
-      redirect_to request.referer, notice: 'Coupen is expired'
-    else
+    if @coupen.present && @coupen.expirey >= Date.today
       current_cart.coupen_id = @coupen.id
       current_cart.save
-
-      redirect_to request.referer, notice: 'Coupen added successfully'
+      session[:total_price] = current_cart.discount_price(44)
     end
   end
 
   def remove_coupen
     current_cart.coupen_id = nil
     if current_cart.save
-      redirect_to request.referer, notice: 'coupen removed successfully'
-    else
-      redirect_to request.referer, notice: 'coupen removed failed'
+      session[:total_price] = current_cart.total_price
     end
   end
 

@@ -28,7 +28,7 @@
             &.active {
 
                 a {
-                    
+
                     &:after {
                         -webkit-transform: scale(1);
                         transform: scale(1);
@@ -39,7 +39,7 @@
             &:hover {
 
                 a {
-                    
+
                     &:after {
                         -webkit-transform: scale(1);
                         transform: scale(1);
@@ -128,7 +128,7 @@
         color: #666666;
         position: relative;
         margin-right: 8px;
-        
+
         &:last-child {
             margin-right: 0;
 
@@ -157,7 +157,7 @@
         color: $heading-color;
         margin-right: 20px;
         cursor: pointer;
-        
+
         &:last-child {
             margin-right: 0;
         }

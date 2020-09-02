@@ -4,9 +4,7 @@ class LineItemsController < ApplicationController
   def create
     product = Product.find_by(id: params[:line_item][:product_id])
 
-    if current_user && current_user.id == product.user_id
-      return
-    end
+    return if current_user && current_user.id == product.user_id
 
     item = current_cart.line_items.find_by(product_id: params[:line_item][:product_id])
 
