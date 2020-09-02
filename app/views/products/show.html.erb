@@ -8,12 +8,12 @@
         <%= link_to raw("<span>2</span><span>Shop</span>"), products_path%>
       </li>
       <li>
-        <a class="active"><span>3</span><span><%=@product.title.capitalize%></span> </a>
+        <a class="active"><span>3</span><span><%=@product.title.capitalize if @product %></span> </a>
       </li>
     </ul>
   </div>
 </div>
-
+  <%if @product%>
     <%flag = @product.photos.count > 1 && current_user && current_user.products.exists?(@product.id) %>
     <section class="product-details spad">
         <div class="container">
@@ -142,8 +142,7 @@
             </div>
         </div>
     </section>
-
-<div class="container">
+    <div class="container">
 <%if flag %>
 <%= link_to 'Edit', edit_product_path(@product),class: 'btn btn-primary' %>
 <%end%>
@@ -162,5 +161,9 @@
   <%elsif !current_user %>
     <h3><%=link_to 'login here to add comment', new_user_session_path, class: "btn btn-primary float-right" %></h3>
   <%end%>
-</div>
+    </div>
+  <%else%>
+    <h2>Product not found</h2>
+  <%end%>
+
 <%= javascript_pack_tag 'scripts', 'data-turbolinks-track': 'reload' %>

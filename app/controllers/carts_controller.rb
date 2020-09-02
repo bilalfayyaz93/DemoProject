@@ -6,7 +6,7 @@ class CartsController < ApplicationController
   end
 
   def update
-    if @coupen.present && @coupen.expirey >= Date.today
+    if @coupen && @coupen.expirey >= Date.today
       current_cart.coupen_id = @coupen.id
       current_cart.save
       session[:total_price] = current_cart.discount_price(44)

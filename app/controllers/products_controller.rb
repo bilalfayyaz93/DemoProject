@@ -23,7 +23,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @comments = @product.comments.includes(:user)
+    @comments = @product.comments.includes(:user) if @product
   end
 
   def new
@@ -74,7 +74,7 @@ class ProductsController < ApplicationController
 
   private
     def set_product
-      @product = Product.find(params[:id])
+      @product = Product.find_by(id: params[:id])
     end
 
     def set_user_product
