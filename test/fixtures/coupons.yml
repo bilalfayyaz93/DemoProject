@@ -2,8 +2,8 @@
 
 one:
   discount: 1
-  expirey: 2020-07-27
+  expiry: 2020-07-27
 
 two:
   discount: 1
-  expirey: 2020-07-27
+  expiry: 2020-07-27

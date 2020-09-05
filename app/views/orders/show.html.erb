@@ -53,15 +53,15 @@
 
             <div class="row">
                 <%price = @order.total_price%>
-                <% coupen = @order.coupen%>
+                <% coupon = @order.coupon%>
                 <%total_price = price%>
                 <%session[:total_price] = total_price%>
                 <%discount = 0%>
                 <div class="col-lg-6">
                   <%=link_to "BACK", orders_path,method: :get, class: "primary-btn"%>
                 </div>
-                <%if coupen%>
-                  <%discount = coupen.discount%>
+                <%if coupon%>
+                  <%discount = coupon.discount%>
                   <%total_price = @order.discount_price(price)%>
                   <%session[:total_price] = total_price%>
                 <%end%>

@@ -1,20 +1,20 @@
 class CartsController < ApplicationController
-  before_action :set_coupen, only: [:update]
+  before_action :set_coupon, only: [:update]
 
   def show
     @line_items = current_cart.line_items.includes(:product)
   end
 
   def update
-    if @coupen && @coupen.expirey >= Date.today
-      current_cart.coupen_id = @coupen.id
+    if @coupon && @coupon.expired?
+      current_cart.coupon_id = @coupon.id
       current_cart.save
       session[:total_price] = current_cart.discount_price(44)
     end
   end
 
-  def remove_coupen
-    current_cart.coupen_id = nil
+  def remove_coupon
+    current_cart.coupon_id = nil
     if current_cart.save
       session[:total_price] = current_cart.total_price
     end
@@ -22,10 +22,10 @@ class CartsController < ApplicationController
 
   private
     def cart_params
-      params.require(:cart).permit(:coupen_id, :user_id)
+      params.require(:cart).permit(:coupon_id, :user_id)
     end
 
-    def set_coupen
-      @coupen = Coupen.find_by(coupen_code: params[:cart][:code])
+    def set_coupon
+      @coupon = coupon.find_by(coupon_code: params[:cart][:code])
     end
 end

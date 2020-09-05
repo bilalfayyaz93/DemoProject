@@ -12,15 +12,15 @@
         <%= f.label :name %>
         <%= f.text_field :name, class: "form-control", :autofocus => true %>
       </div>
-      <%if current_user.avator.attached?%>
-    <%= image_tag current_user.avator,height: 100, width: 100, class: 'rounded-circle' %>
-    <%= f.label :remove_avator%>
-    <%= f.check_box :remove_avator%><br>
+      <%if current_user.avatar.attached?%>
+    <%= image_tag current_user.avatar,height: 100, width: 100, class: 'rounded-circle' %>
+    <%= f.label :remove_avatar%>
+    <%= f.check_box :remove_avatar%><br>
   <%end%>
   <br>
   <div class="field">
-    <%= f.label :avator %>
-    <%= f.file_field :avator %>
+    <%= f.label :avatar %>
+    <%= f.file_field :avatar %>
   </div>
   <br>
       <div class="form-group">

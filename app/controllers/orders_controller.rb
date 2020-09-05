@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
+  include CurrentOrder
+
   before_action :authenticate_user!
   before_action :set_order, only: [:show ]
-
-  include CreateOrder
 
   def index
     @orders = current_user.orders
@@ -23,7 +23,7 @@ class OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:user_id, :coupen_id, :checkout_date)
+      params.require(:order).permit(:user_id, :coupon_id, :checkout_date)
     end
 
 end

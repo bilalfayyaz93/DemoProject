@@ -1,16 +1,16 @@
-                  <%if coupen%>
-                    <% if coupen.expirey > DateTime.now %>
-                      <%session[:discount] = coupen.discount%>
+                  <%if coupon%>
+                    <% if coupon.expired? %>
+                      <%session[:discount] = coupon.discount%>
                     <%else%>
                       <%session[:discount] = 0%>
                     <%end%>
                     <%total_price = current_cart.discount_price(price)%>
                     <%session[:total_price] = total_price%>
                       <div class="discount__content">
-                          <h6>Coupen Code</h6>
-                          <p><%=coupen.coupen_code%></p>
+                          <h6>coupon Code</h6>
+                          <p><%=coupon.coupon_code%></p>
                           <div class="row">
-                            <%= link_to "remove coupen", remove_coupen_cart_path(current_cart),remote: true, method: :patch,class: "primary-btn" %>
+                            <%= link_to "remove coupon", remove_coupon_cart_path(current_cart),remote: true, method: :patch,class: "primary-btn" %>
                           </div>
                       </div>
                   <%else%>

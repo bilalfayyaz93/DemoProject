@@ -6,7 +6,7 @@ module DeviseWhitelist
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :avator])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :avator, :remove_avator])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :avatar])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :avatar, :remove_avatar])
   end
 end

@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   belongs_to :user
-  belongs_to :coupen, optional: true
+  belongs_to :coupon, optional: true
 
   has_many :sold_products, dependent: :destroy
 
@@ -9,8 +9,8 @@ class Order < ApplicationRecord
   end
 
   def discount_price(total)
-    if self.coupen
-      (total.to_f*((100-self.coupen.discount).to_f/100)).round(2)
+    if self.coupon
+      (total.to_f*((100-self.coupon.discount).to_f/100)).round(2)
     else
       total
     end

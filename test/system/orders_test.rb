@@ -15,7 +15,7 @@ class OrdersTest < ApplicationSystemTestCase
     click_on "New Order"
 
     fill_in "Checkout date", with: @order.checkout_date
-    fill_in "Coupen", with: @order.coupen_id
+    fill_in "coupon", with: @order.coupon_id
     fill_in "User", with: @order.user_id
     click_on "Create Order"
 
@@ -28,7 +28,7 @@ class OrdersTest < ApplicationSystemTestCase
     click_on "Edit", match: :first
 
     fill_in "Checkout date", with: @order.checkout_date
-    fill_in "Coupen", with: @order.coupen_id
+    fill_in "coupon", with: @order.coupon_id
     fill_in "User", with: @order.user_id
     click_on "Update Order"
 

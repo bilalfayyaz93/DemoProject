@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_08_28_110026) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "coupen_id"
+    t.integer "coupon_id"
   end
 
   create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -50,13 +50,13 @@ ActiveRecord::Schema.define(version: 2020_08_28_110026) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "coupens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "coupons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "discount"
-    t.date "expirey"
+    t.date "expiry"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "coupen_code", null: false
-    t.index ["coupen_code"], name: "index_coupens_on_coupen_code", unique: true
+    t.string "coupon_code", null: false
+    t.index ["coupon_code"], name: "index_coupons_on_coupon_code", unique: true
   end
 
   create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 2020_08_28_110026) do
 
   create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "coupen_id"
+    t.integer "coupon_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_orders_on_user_id"

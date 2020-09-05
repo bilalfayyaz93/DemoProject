@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  attr_accessor :remove_avator
+  attr_accessor :remove_avatar
 
-  has_one_attached :avator
+  has_one_attached :avatar
 
   has_many :comments
   has_many :orders
@@ -12,9 +12,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  after_save :purge_avator, if: :remove_avator
+  after_save :purge_avatar, if: :remove_avatar
 
-  def purge_avator
-    self.avator.purge_later
+  def purge_avatar
+    self.avatar.purge_later
   end
 end

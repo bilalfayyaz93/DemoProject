@@ -2,7 +2,7 @@
   <div class='inner'>
     <ul class='cf'>
       <li>
-        <a class="active"><span>1</span><span>Home</span> </a>
+        <%= link_to raw("<span>1</span><span>Home</span>"), root_path,class: 'active'%>
       </li>
       <li>
         <%= link_to raw("<span>2</span><span>My Products</span>"), user_products_products_path,class: ''%>
@@ -19,16 +19,15 @@
 
 
 
-  <%cart = Cart.find(session[:cart_id].to_i)%>
-<%unless @products.blank?%>
   <section class="shop spad">
         <div class="container">
+          <%unless @products.blank?%>
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="row">
                       <% @products.each do |product| %>
-                        <%if cart.line_items.exists?(product_id: product.id)%>
-                          <%quant=product.quantity- cart.line_items.find_by(product_id: product.id).quantity %>
+                        <%if current_cart.line_items.exists?(product_id: product.id)%>
+                          <%quant=product.quantity- current_cart.line_items.find_by(product_id: product.id).quantity %>
                         <%else%>
                           <%quant=product.quantity %>
                         <%end%>
@@ -80,12 +79,12 @@
                 </div>
 
             </div>
-            <%= link_to 'Upload A Product', new_product_path, class: "primary-btn float-right" %>
+          <%end%>
+          <%= link_to 'Upload A Product', new_product_path, class: "primary-btn float-right" %>
         </div>
 
     </section>
 
-<%end%>
 
 
 

@@ -1,3 +1,3 @@
-$("#discount").html("% <%= j current_cart.coupen.discount%>");
+$("#discount").html("% <%= j current_cart.coupon.discount%>");
 $("#total_price").html("$ <%= j session[:total_price]%>");
-$("#coupen").html("<%= j render 'coupen', coupen: current_cart.coupen, price: session[:total_price]%>")
+$("#coupon").html("<%= j render 'coupon', coupon: current_cart.coupon, price: session[:total_price]%>")

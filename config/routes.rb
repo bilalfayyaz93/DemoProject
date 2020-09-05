@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resource :cart, only: [:show, :update] do
     member do
-      patch :remove_coupen
+      patch :remove_coupon
     end
   end
 

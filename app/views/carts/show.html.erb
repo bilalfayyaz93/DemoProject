@@ -2,7 +2,7 @@
   <div class='inner'>
     <ul class='cf'>
       <li>
-        <%= link_to raw("<span>1</span><span>Home</span>"), root_path%>
+        <%= link_to raw("<span>1</span><span>Home</span>"), root_path,class: ''%>
       </li>
       <li>
         <%= link_to raw("<span>2</span><span>My Products</span>"), user_products_products_path,class: ''%>
@@ -11,7 +11,7 @@
         <%= link_to raw("<span>3</span><span>My Orders</span>"), orders_path,class: ''%>
       </li>
       <li>
-        <a class="active"><span>4</span><span>My Cart</span> </a>
+        <%= link_to raw("<span>4</span><span>My Cart</span>"), cart_path,class: 'active'%>
       </li>
     </ul>
   </div>
@@ -81,12 +81,12 @@
               <%unless @line_items.count.zero?%>
                 <div class="row">
                   <% price = current_cart.total_price %>
-                  <% coupen = current_cart.coupen%>
+                  <% coupon = current_cart.coupon%>
                   <%total_price = price%>
                   <%session[:total_price] = total_price%>
                   <%discount = 0%>
-                  <div class = "col-lg-6" id = "coupen">
-                    <%= render 'coupen', coupen: coupen, price: price%>
+                  <div class = "col-lg-6" id = "coupon">
+                    <%= render 'coupon', coupon: coupon, price: price%>
                   </div>
                   <div class="col-lg-4 offset-lg-2">
                       <div class="cart__total__procced">

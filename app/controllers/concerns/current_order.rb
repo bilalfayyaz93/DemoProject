@@ -1,9 +1,8 @@
-module CreateOrder
-  extend ActiveSupport::Concern
+module CurrentOrder
 
   def create_order
     order           = current_user.orders.new
-    order.coupen_id = current_cart.coupen_id
+    order.coupon_id = current_cart.coupon_id
     line_items      = current_cart.line_items.includes(:product)
 
     order.save
@@ -23,8 +22,8 @@ module CreateOrder
 
     current_cart.line_items.destroy_all
 
-    if current_cart.coupen_id
-      current_cart.coupen_id = nil
+    if current_cart.coupon_id
+      current_cart.coupon_id = nil
       current_cart.save
     end
   end
