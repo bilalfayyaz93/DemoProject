@@ -20,7 +20,7 @@
                         <div class="product__details__pic__left product__thumb nice-scroll">
                             <%@product.photos.each_with_index do |photo, index|%>
                               <% if flag%>
-                                <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), delete_image_product_path({img_id: photo.id, id: @product.id}),method: :delete,data: { confirm: 'Are you sure?' }  %></td>
+                                <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), purge_image_product_path({img_id: photo.id, id: @product.id}),method: :delete,data: { confirm: 'Are you sure?' }  %></td>
                               <%end%>
 
                               <%if index.zero? %>

@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :user_products]
-  before_action :set_user_product, only: [:edit, :update, :destroy, :delete_image]
+  before_action :set_user_product, only: [:edit, :update, :destroy, :purge_image]
   before_action :set_product, only: [:show]
 
   PRODUCTS_PER_PAGE = 8
@@ -60,7 +60,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def delete_image
+  def purge_image
     if @product.photos.count > 1
       photo = @product.photos.find_by(id: params[:img_id])
 

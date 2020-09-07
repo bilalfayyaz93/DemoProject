@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :products do
     member do
-      delete :delete_image
+      delete :purge_image
     end
 
     collection do
