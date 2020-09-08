@@ -1,21 +1,23 @@
-version: '3'
+version: "3.7"
 services:
-  db:
+  app:
+    image: bilalfayyaz93/shopping101:1.2
+    command: /bin/sh -c "rm -f /tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mysql
+    links:
+      - mysql
+  mysql:
     image: mysql:5.7
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: DemoProject_development
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
+      MYSQL_DATABASE: shopping101_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
     ports:
-      - "3307:3306"
-  web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/shopping101
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
+      - "3306:3306"
+    expose:
+      - '3306'

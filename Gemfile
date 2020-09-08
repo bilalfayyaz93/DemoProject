@@ -8,9 +8,9 @@ gem 'mini_magick', '~> 4.5', '>= 4.5.1'
 gem 'record_tag_helper'
 gem 'mysql2'
 gem "thinking-sphinx",
-  :git    => "https://github.com/pat/thinking-sphinx.git",
-  :branch => "develop",
-  :ref    => "d1e3603c9e"
+  git:    "https://github.com/pat/thinking-sphinx.git",
+  branch: "develop",
+  ref:    "d1e3603c9e"
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
 gem 'puma', '~> 4.1'
 gem 'sass-rails', '>= 6'
