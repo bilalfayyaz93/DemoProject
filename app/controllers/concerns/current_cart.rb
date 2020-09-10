@@ -1,4 +1,10 @@
 module CurrentCart
+  extend ActiveSupport::Concern
+
+  included do
+    before_action :set_cart
+  end
+
   def set_cart
     @current_cart = Cart.find(session[:cart_id])
   rescue ActiveRecord::RecordNotFound
