@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   app:
-    image: bilalfayyaz93/shopping101:1.4
+    image: bilalfayyaz93/shopping101:2.0
     command: /bin/sh -c "rm -f /tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
     ports:
       - '3000:3000'
@@ -14,6 +14,9 @@ services:
       DB_PASSWORD: password
       DB_NAME: shopping101_db
       DB_HOST: mysql
+      DEV_DB_NAME: shopping101_db
+      TEST_DB_NAME: shopping101_db
+      PROD_DB_NAME: shopping101_db
   mysql:
     image: mysql:5.7
     restart: always
@@ -21,8 +24,9 @@ services:
       MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: shopping101_db
       MYSQL_USER: root
-      MYSQL_PASSWORD:
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     expose:
       - '3306'
+
