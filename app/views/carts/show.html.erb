@@ -51,17 +51,16 @@
                                     </td>
                                     <td class="cart__price">$ <%= prod.price.to_f %></td>
                                     <td class="cart__quantity">
+                                      <%=form_for line_item do |f|%>
                                         <div class="pro-qty">
-                                          <%=form_for line_item do |f|%>
                                             <%=f.number_field :quantity , min: 1,max: prod.quantity %>
                                         </div>
                                         <div class= "row">
                                           <%=f.submit 'UPDATE CART', class: "btn btn-light"%>
                                         </div>
-                                        <%end%>
+                                      <%end%>
                                     </td>
                                     <td class="cart__total">$ <%=line_item.total_price %></td>
-
                                     <td class="cart__close"><%= link_to raw("<span class='fa fa-times'></span>"), line_item_path(line_item),method: :delete, date: { confirm: "are you sure?" } %></td>
                                 </tr>
                                 <%end%>
