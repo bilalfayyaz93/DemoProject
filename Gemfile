@@ -20,8 +20,6 @@ gem 'jbuilder', '~> 2.7'
 gem 'stripe'
 gem 'bootsnap', '>= 1.4.2', require: false
 
-gem 'will_paginate', '~> 3.1.0'
-gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

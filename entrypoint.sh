@@ -4,6 +4,7 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /shopping101/tmp/pids/server.pid
 bundle exec rake db:migrate
+bundle exec rake ts:rebuild
 
 if [[ $? != 0 ]]; then
   echo

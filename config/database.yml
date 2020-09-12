@@ -13,15 +13,14 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  database: <%= ENV['DB_NAME']%>
-  username: <%= ENV['DB_USER']%>
-  password: <%= ENV['DB_PASSWORD']%>
-  host:     <%= ENV['DB_HOST']%>
+  database: shopping101_db
+  username: root
+  password: password
+  host: mysql
   socket: /tmp/mysql.sock
 
 development:
   <<: *default
-  database: <%= ENV['DEV_DB_NAME']%>
 
 
 # Warning: The database defined as "test" will be erased and
@@ -29,7 +28,6 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: <%= ENV['TEST_DB_NAME']%>
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -51,5 +49,4 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV['PROD_DB_NAME']%>
 
